@@ -120,8 +120,8 @@ namespace CompetencyCertificate.Migrations
 
                     b.Property<string>("AadharNo")
                         .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("character varying(12)");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("BankAccountNumber")
                         .IsRequired()

@@ -121,7 +121,7 @@ namespace CompetencyCertificate.Migrations
                     Designation_Name = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
                     DepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
                     SubDepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
-                    AadharNo = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
+                    AadharNo = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     BloodGroup = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     ContactNo = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
                     EmerContactNo = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),

@@ -198,6 +198,9 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     
+    // Automatically apply database migrations
+    context.Database.Migrate();
+    
     // Seed Departments
     if (!context.Department.Any())
     {

@@ -102,7 +102,7 @@ namespace CompetencyCertificate.Models
         [JsonIgnore]
         public SubDepartment? SubDepartment { get; set; }
 
-        [MaxLength(12)]
+        [MaxLength(256)]
         public string AadharNo { get; set; } = "";
 
         [MaxLength(60)]

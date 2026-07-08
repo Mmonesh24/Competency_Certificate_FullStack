@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompetencyCertificate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260708103543_InitialSupabasePostgres")]
+    [Migration("20260708105935_InitialSupabasePostgres")]
     partial class InitialSupabasePostgres
     {
         /// <inheritdoc />
@@ -123,8 +123,8 @@ namespace CompetencyCertificate.Migrations
 
                     b.Property<string>("AadharNo")
                         .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("character varying(12)");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("BankAccountNumber")
                         .IsRequired()
