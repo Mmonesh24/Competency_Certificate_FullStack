@@ -1,0 +1,103 @@
+<div class="landing-wrapper min-h-screen p-6 md:p-12">
+  <!-- Top Header Navigation Bar -->
+  <header class="glass-panel w-full p-4 mb-12 flex justify-between items-center transition-all duration-300">
+    <div class="flex items-center space-x-3">
+      <span class="text-2xl">🚇</span>
+      <span class="font-bold text-lg tracking-wide uppercase text-blue-900">CMRL Competency System</span>
+    </div>
+    <div>
+      <a routerLink="/login" class="btn btn-primary">Enter System</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+    <div class="space-y-6">
+      <div class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-blue-700 bg-blue-100 shadow-sm border border-blue-200">
+        Enterprise Compliance Suite
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 leading-tight tracking-tight">
+        Competency Certificate <span class="bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">Management Platform</span>
+      </h1>
+      <p class="text-slate-600 text-lg leading-relaxed">
+        A secure, high-precision compliance framework designed for Chennai Metro Rail Limited (CMRL). Tracks contractor certifications, runs automatic auditable workflows, and features Gemini-powered intelligent assessments and multimodal OCR document processing.
+      </p>
+      <div class="flex flex-wrap gap-4 pt-2">
+        <a routerLink="/login" class="btn btn-primary btn-lg px-8 py-3">Login to Dashboard</a>
+        <a href="#features" class="btn btn-secondary btn-lg px-8 py-3">Explore Features</a>
+      </div>
+    </div>
+
+    <!-- Skeuomorphic Render Box -->
+    <div class="card p-8 flex flex-col justify-between items-center space-y-6 text-center">
+      <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-inner bg-slate-100 border border-white">
+        🏆
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-bold text-xl text-slate-800">Secure Digital Certificates</h3>
+        <p class="text-xs text-slate-500 max-w-sm">
+          Server-side QuestPDF rendering with integrated QR-codes, cryptographically signed signatures, and public verification nodes.
+        </p>
+      </div>
+      <div class="w-full h-32 rounded-xl flex items-center justify-center bg-slate-200 shadow-inner overflow-hidden border border-white relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 backdrop-blur-sm"></div>
+        <span class="text-slate-600 font-semibold text-sm relative z-10">Verification Node: Active 🟢</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Features Grid -->
+  <section id="features" class="space-y-8 mb-16">
+    <div class="text-center max-w-2xl mx-auto space-y-2">
+      <h2 class="text-3xl font-extrabold text-slate-800">Core Capabilities</h2>
+      <p class="text-slate-500 text-sm">
+        Explore the complete features developed across all five implementation phases.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (feat of features; track feat.title) {
+        <div class="card p-6 flex flex-col space-y-4 hover:translate-y-[-4px] transition-all">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-slate-100 shadow-sm border border-white">
+            {{ feat.icon }}
+          </div>
+          <h4 class="font-bold text-lg text-slate-800">{{ feat.title }}</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">{{ feat.description }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Project Layer Stats -->
+  <section class="card p-8 md:p-12 mb-16 text-center space-y-8">
+    <div class="space-y-2">
+      <h3 class="text-2xl font-bold text-slate-800">Operational Integrity</h3>
+      <p class="text-slate-500 text-xs max-w-md mx-auto">
+        Transitioned from a vulnerable monolith to an enterprise-grade web application.
+      </p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="space-y-1">
+        <h4 class="text-3xl font-extrabold text-blue-900">100%</h4>
+        <p class="text-xxs uppercase tracking-wider text-slate-400 font-semibold">Security Fixes</p>
+      </div>
+      <div class="space-y-1">
+        <h4 class="text-3xl font-extrabold text-blue-900">Postgres</h4>
+        <p class="text-xxs uppercase tracking-wider text-slate-400 font-semibold">Supabase Engine</p>
+      </div>
+      <div class="space-y-1">
+        <h4 class="text-3xl font-extrabold text-blue-900">Gemini</h4>
+        <p class="text-xxs uppercase tracking-wider text-slate-400 font-semibold">AI Assistant</p>
+      </div>
+      <div class="space-y-1">
+        <h4 class="text-3xl font-extrabold text-blue-900">Ready</h4>
+        <p class="text-xxs uppercase tracking-wider text-slate-400 font-semibold">Docker Orchestrated</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-slate-400 text-xs border-t border-slate-300 pt-8 mt-12 pb-6">
+    <p>© 2026 Chennai Metro Rail Limited. Developed and Scanned Compliant.</p>
+  </footer>
+</div>

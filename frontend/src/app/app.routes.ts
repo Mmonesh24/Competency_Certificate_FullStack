@@ -31,14 +31,13 @@ import { ContractorEditComponent } from './pages/contractor-edit/contractor-edit
 import { ContractorViewForEditComponent } from './pages/contractor-view-for-edit/contractor-view-for-edit.component';
 import { SubDepartmentEditComponent } from './pages/sub-department-edit/sub-department-edit.component';
 import { CertificateApproveComponent } from './pages/certificate-approve/certificate-approve.component';
-
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        component: LandingPageComponent
     },
     {
         path: 'login',
