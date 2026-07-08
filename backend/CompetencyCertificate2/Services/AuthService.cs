@@ -18,17 +18,23 @@ namespace CompetencyCertificate.Services
         private readonly IGenericRepository<HRLogin> _hrLoginRepo;
         private readonly IEmployeeRepository _employeeRepo;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, string> ResetTokens = 
+            new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
 
         public AuthService(
             IGenericRepository<EmployeeLogin> employeeLoginRepo,
             IGenericRepository<HRLogin> hrLoginRepo,
             IEmployeeRepository employeeRepo,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IEmailService emailService)
         {
             _employeeLoginRepo = employeeLoginRepo;
             _hrLoginRepo = hrLoginRepo;
             _employeeRepo = employeeRepo;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto request)
@@ -163,6 +169,60 @@ namespace CompetencyCertificate.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<bool> ForgotPasswordAsync(string employeeId)
+        {
+            var empLogin = await _employeeLoginRepo.GetByIdAsync(employeeId);
+            var hrLogin = await _hrLoginRepo.GetByIdAsync(employeeId);
+
+            if (empLogin == null && hrLogin == null)
+            {
+                return false;
+            }
+
+            // Generate 6 digit pin
+            var random = new Random();
+            var pin = random.Next(100000, 999999).ToString();
+            ResetTokens[employeeId] = pin;
+
+            var targetEmail = $"{employeeId}@cmrl.in";
+            var emailBody = $"Hello,\n\nYou have requested to reset your password. Your security reset code is: {pin}\n\nThis code will expire shortly.\n\nRegards,\nCMRL Team";
+            
+            await _emailService.SendEmailAsync(targetEmail, "Password Reset Code", emailBody);
+            return true;
+        }
+
+        public async Task<bool> ResetPasswordAsync(string employeeId, string token, string newPassword)
+        {
+            if (!ResetTokens.TryGetValue(employeeId, out var storedPin) || storedPin != token)
+            {
+                return false;
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+
+            var empLogin = await _employeeLoginRepo.GetByIdAsync(employeeId);
+            if (empLogin != null)
+            {
+                empLogin.Password = hashedPassword;
+                _employeeLoginRepo.Update(empLogin);
+                await _employeeLoginRepo.SaveChangesAsync();
+                ResetTokens.TryRemove(employeeId, out _);
+                return true;
+            }
+
+            var hrLogin = await _hrLoginRepo.GetByIdAsync(employeeId);
+            if (hrLogin != null)
+            {
+                hrLogin.Password = hashedPassword;
+                _hrLoginRepo.Update(hrLogin);
+                await _hrLoginRepo.SaveChangesAsync();
+                ResetTokens.TryRemove(employeeId, out _);
+                return true;
+            }
+
+            return false;
         }
     }
 }

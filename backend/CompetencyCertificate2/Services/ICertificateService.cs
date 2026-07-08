@@ -7,8 +7,8 @@ namespace CompetencyCertificate.Services
     public interface ICertificateService
     {
         Task<bool> AddInitiateAsync(CertificateInitiateDto dto);
-        Task<IEnumerable<InitiateListDto>> GetAllInitiateBySubdepartmentAsync(string subDepartmentName);
-        Task<IEnumerable<InitiateListDto>> GetAllInitializedBySubDepartmentAsync(string subDepartmentName);
+        Task<IEnumerable<InitiateListDto>> GetAllInitiateBySubdepartmentAsync(string subDepartmentName, int approvalLevel = 0);
+        Task<IEnumerable<InitiateListDto>> GetAllInitializedBySubDepartmentAsync(string subDepartmentName, int approvalLevel = 0);
         Task<bool> DeleteInitiateAsync(string id);
         Task<bool> DeleteFromInitiateAsync(string employeeId);
         Task<bool> ApproveAndGenerateCertificateAsync(string employeeId);

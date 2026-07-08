@@ -87,6 +87,8 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddHttpContextAccessor();
+
 // Repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -98,6 +100,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ICertificateService, CertificateService>();
 builder.Services.AddScoped<IMasterDataService, MasterDataService>();
 builder.Services.AddScoped<IContractorService, ContractorService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") 
     ?? builder.Configuration["AppSettings:JWTSecret"];

@@ -44,19 +44,19 @@ namespace CompetencyCertificate.Services
             return await _initiateRepo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<InitiateListDto>> GetAllInitiateBySubdepartmentAsync(string subDepartmentName)
+        public async Task<IEnumerable<InitiateListDto>> GetAllInitiateBySubdepartmentAsync(string subDepartmentName, int approvalLevel = 0)
         {
             var all = await _certificateRepo.GetAllInitiateWithEmployeeAsync();
             return all
-                .Where(i => i.Employee != null && i.Employee.SubDepartmentName == subDepartmentName)
+                .Where(i => i.Employee != null && i.Employee.SubDepartmentName == subDepartmentName && i.ApprovalLevel == approvalLevel)
                 .Select(MapToInitiateDto);
         }
 
-        public async Task<IEnumerable<InitiateListDto>> GetAllInitializedBySubDepartmentAsync(string subDepartmentName)
+        public async Task<IEnumerable<InitiateListDto>> GetAllInitializedBySubDepartmentAsync(string subDepartmentName, int approvalLevel = 0)
         {
             var all = await _certificateRepo.GetAllInitiateWithEmployeeAsync();
             return all
-                .Where(i => i.Employee != null && i.Employee.SubDepartmentName == subDepartmentName)
+                .Where(i => i.Employee != null && i.Employee.SubDepartmentName == subDepartmentName && i.ApprovalLevel == approvalLevel)
                 .Select(MapToInitiateDto);
         }
 
@@ -88,6 +88,15 @@ namespace CompetencyCertificate.Services
                     var initiates = await _initiateRepo.FindAsync(i => i.employee_id == employeeId);
                     var initiateRecord = initiates.FirstOrDefault();
                     if (initiateRecord == null) return false;
+
+                    if (initiateRecord.ApprovalLevel == 0)
+                    {
+                        initiateRecord.ApprovalLevel = 1;
+                        _initiateRepo.Update(initiateRecord);
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                        return true;
+                    }
 
                     var employee = await _employeeRepo.GetEmployeeWithRelationsAsync(employeeId);
                     if (employee == null) return false;

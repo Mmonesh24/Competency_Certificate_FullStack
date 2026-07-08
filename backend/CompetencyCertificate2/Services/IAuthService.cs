@@ -9,5 +9,7 @@ namespace CompetencyCertificate.Services
         Task<bool> RegisterEmployeeAsync(EmployeeRegisterDto request);
         Task<bool> RegisterHRAsync(HRRegisterDto request);
         Task<bool> DeleteEmployeeLoginAsync(string id);
+        Task<bool> ForgotPasswordAsync(string employeeId);
+        Task<bool> ResetPasswordAsync(string employeeId, string token, string newPassword);
     }
 }

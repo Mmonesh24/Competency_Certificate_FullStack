@@ -1,6 +1,8 @@
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using QRCoder;
+using System;
 using System.IO;
 
 namespace CompetencyCertificate.Services
@@ -17,13 +19,10 @@ namespace CompetencyCertificate.Services
                     page.Margin(0.75f, Unit.Inch);
                     page.PageColor(Colors.White);
 
-                    // Add border
                     page.Content().Border(3).BorderColor(Colors.Blue.Darken4).Padding(20).Column(column =>
                     {
-                        // Header section
                         column.Item().Row(row =>
                         {
-                            // Logo if available
                             if (contractorLogoBytes != null && contractorLogoBytes.Length > 0)
                             {
                                 try
@@ -32,7 +31,7 @@ namespace CompetencyCertificate.Services
                                 }
                                 catch
                                 {
-                                    row.RelativeItem(1).Text(""); // fallback
+                                    row.RelativeItem(1).Text("");
                                 }
                             }
                             else
@@ -46,12 +45,11 @@ namespace CompetencyCertificate.Services
                                 headerCol.Item().Text("COMPETENCY CERTIFICATE").Bold().FontSize(14).FontColor(Colors.Grey.Darken3).AlignCenter();
                             });
 
-                            row.RelativeItem(1).Text(""); // right spacer
+                            row.RelativeItem(1).Text("");
                         });
 
                         column.Item().PaddingTop(20).PaddingBottom(20).BorderBottom(1).BorderColor(Colors.Blue.Darken4);
 
-                        // Body text
                         column.Item().AlignLeft().Text(text =>
                         {
                             text.Span("This is to certify that ").FontSize(12);
@@ -63,7 +61,6 @@ namespace CompetencyCertificate.Services
 
                         column.Item().PaddingBottom(20);
 
-                        // Details table
                         column.Item().Table(table =>
                         {
                             table.ColumnsDefinition(columns =>
@@ -87,7 +84,6 @@ namespace CompetencyCertificate.Services
 
                         column.Item().PaddingBottom(40);
 
-                        // Signatures row
                         column.Item().Row(row =>
                         {
                             row.RelativeItem().Column(sigCol =>
@@ -95,6 +91,16 @@ namespace CompetencyCertificate.Services
                                 sigCol.Item().Text("_______________________").AlignCenter();
                                 sigCol.Item().Text("Assessor Signature").FontSize(10).AlignCenter();
                             });
+
+                            var qrBytes = GenerateQrCodeBytes($"https://localhost:7269/api/Verification/{employeeId}");
+                            if (qrBytes != null)
+                            {
+                                row.ConstantItem(60).Height(60).Image(qrBytes);
+                            }
+                            else
+                            {
+                                row.RelativeItem().Text("");
+                            }
 
                             row.RelativeItem().Column(sigCol =>
                             {
@@ -110,6 +116,27 @@ namespace CompetencyCertificate.Services
             {
                 document.GeneratePdf(stream);
                 return stream.ToArray();
+            }
+        }
+
+        private static byte[]? GenerateQrCodeBytes(string url)
+        {
+            try
+            {
+                using (var qrGenerator = new QRCodeGenerator())
+                {
+                    using (var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q))
+                    {
+                        using (var qrCode = new PngByteQRCode(qrCodeData))
+                        {
+                            return qrCode.GetGraphic(20);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return null;
             }
         }
     }

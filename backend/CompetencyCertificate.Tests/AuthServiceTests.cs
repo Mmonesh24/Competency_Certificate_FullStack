@@ -17,6 +17,7 @@ namespace CompetencyCertificate.Tests
         private readonly Mock<IGenericRepository<HRLogin>> _hrLoginRepoMock;
         private readonly Mock<IEmployeeRepository> _employeeRepoMock;
         private readonly Mock<IConfiguration> _configMock;
+        private readonly Mock<IEmailService> _emailServiceMock;
         private readonly AuthService _authService;
 
         public AuthServiceTests()
@@ -25,12 +26,14 @@ namespace CompetencyCertificate.Tests
             _hrLoginRepoMock = new Mock<IGenericRepository<HRLogin>>();
             _employeeRepoMock = new Mock<IEmployeeRepository>();
             _configMock = new Mock<IConfiguration>();
+            _emailServiceMock = new Mock<IEmailService>();
 
             _authService = new AuthService(
                 _employeeLoginRepoMock.Object,
                 _hrLoginRepoMock.Object,
                 _employeeRepoMock.Object,
-                _configMock.Object
+                _configMock.Object,
+                _emailServiceMock.Object
             );
         }
 
@@ -88,6 +91,23 @@ namespace CompetencyCertificate.Tests
             Assert.False(result);
             _employeeLoginRepoMock.Verify(repo => repo.AddAsync(It.IsAny<EmployeeLogin>()), Times.Never);
             _employeeLoginRepoMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
+        }
+
+        [Fact]
+        public async Task ForgotPasswordAsync_ShouldSendEmail_WhenUserExists()
+        {
+            // Arrange
+            var empId = "EMP101";
+            var existingLogin = new EmployeeLogin { employee_id = empId };
+            _employeeLoginRepoMock.Setup(r => r.GetByIdAsync(empId)).ReturnsAsync(existingLogin);
+            _emailServiceMock.Setup(e => e.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _authService.ForgotPasswordAsync(empId);
+
+            // Assert
+            Assert.True(result);
+            _emailServiceMock.Verify(e => e.SendEmailAsync(It.Is<string>(to => to == "EMP101@cmrl.in"), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
     }
 }

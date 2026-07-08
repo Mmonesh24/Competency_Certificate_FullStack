@@ -66,5 +66,41 @@ namespace CompetencyCertificate.Controllers
 
             return Ok(new { message = "Employee login deleted" });
         }
+
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var success = await _authService.ForgotPasswordAsync(request.EmployeeId);
+            if (!success) return NotFound(new { message = "Employee ID not found." });
+
+            return Ok(new { message = "Reset code sent successfully to registered email." });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var success = await _authService.ResetPasswordAsync(request.EmployeeId, request.Token, request.NewPassword);
+            if (!success) return BadRequest(new { message = "Invalid reset token or employee ID." });
+
+            return Ok(new { message = "Password reset successfully." });
+        }
+    }
+
+    public class ForgotPasswordRequest
+    {
+        public string EmployeeId { get; set; } = "";
+    }
+
+    public class ResetPasswordRequest
+    {
+        public string EmployeeId { get; set; } = "";
+        public string Token { get; set; } = "";
+        public string NewPassword { get; set; } = "";
     }
 }

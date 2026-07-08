@@ -35,14 +35,18 @@ namespace CompetencyCertificate.Controllers
         [HttpGet("GetAllInitiateBySubdepartment/{SubDepartmentName}")]
         public async Task<IActionResult> GetAllInitiateBySubdepartment(string SubDepartmentName)
         {
-            var list = await _certificateService.GetAllInitiateBySubdepartmentAsync(SubDepartmentName);
+            var isHr = User.IsInRole("HR");
+            int approvalLevel = isHr ? 1 : 0;
+            var list = await _certificateService.GetAllInitiateBySubdepartmentAsync(SubDepartmentName, approvalLevel);
             return Ok(list);
         }
 
         [HttpGet("GetAllInitializedBySubDepartment/{SubDepartmentName}")]
         public async Task<IActionResult> GetAllInitializedBySubDepartment(string SubDepartmentName)
         {
-            var list = await _certificateService.GetAllInitializedBySubDepartmentAsync(SubDepartmentName);
+            var isHr = User.IsInRole("HR");
+            int approvalLevel = isHr ? 1 : 0;
+            var list = await _certificateService.GetAllInitializedBySubDepartmentAsync(SubDepartmentName, approvalLevel);
             return Ok(list);
         }
 
