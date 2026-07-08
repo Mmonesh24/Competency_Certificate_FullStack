@@ -45,7 +45,7 @@ export class DesignationFormComponent {
  }
  submitForm(){
    if (this.Data.designation_Name && this.Data.designationCode) {
-    this.http.post("https://localhost:7269/api/User/AddDesignation", this.Data)
+    this.http.post("/api/User/AddDesignation", this.Data)
       .subscribe(response => {
         alert("Form submitted successfully");
         location.reload(); // Reload the page to reflect changes

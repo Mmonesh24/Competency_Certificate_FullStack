@@ -74,8 +74,7 @@ ngOnInit(): void {
     alert(`Initializing ${designation.departmentName} (${designation.departmentCode})`);
   }
 fetchDepartmentData(): void {
-    this.http.get('https://localhost:7269/api/User/GetAllDepartments').subscribe((data:any)=>{
-    debugger
+    this.http.get('/api/User/GetAllDepartments').subscribe((data:any)=>{
     this.DepartmentData = data;
     this.filteredDepartment = [...this.DepartmentData];
     console.log('Department Data:', this.DepartmentData);

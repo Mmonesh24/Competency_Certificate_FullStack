@@ -61,7 +61,7 @@ export class CertificateInitiateComponent implements OnInit {
 fetchSubDepartmentEmployees(subDepartment: string): void {
   const encodedSubDepartment = encodeURIComponent(subDepartment);
 
-  this.http.get<any>(`https://localhost:7269/api/User/GetEmployeesBySubDepartmentId/${encodedSubDepartment}`).subscribe({
+  this.http.get<any>(`/api/User/GetEmployeesBySubDepartmentId/${encodedSubDepartment}`).subscribe({
     next: (res) => {
       const allEmployees: Employee[] = Array.isArray(res) ? res : res?.employees || [];
 
@@ -72,7 +72,7 @@ fetchSubDepartmentEmployees(subDepartment: string): void {
 
       console.log('All employees:', allEmployees);
 
-      this.http.get<any>(`https://localhost:7269/api/User/GetAllInitiateBySubdepartment/${encodedSubDepartment}`).subscribe({
+      this.http.get<any>(`/api/User/GetAllInitiateBySubdepartment/${encodedSubDepartment}`).subscribe({
         next: (res2) => {
           const initiatedRecords: Initiate[] = Array.isArray(res2.data) ? res2.data : res2.data?.records || [];
 
@@ -182,7 +182,7 @@ fetchSubDepartmentEmployees(subDepartment: string): void {
       employee_id: employee.employee_id
     };
 
-    this.http.post('https://localhost:7269/api/User/AddInitiate', initializeDto).subscribe({
+    this.http.post('/api/User/AddInitiate', initializeDto).subscribe({
       next: (response: any) => {
         console.log('Employee initialized successfully:', response);
         alert(`${employee.employee_name} has been initialized successfully!`);

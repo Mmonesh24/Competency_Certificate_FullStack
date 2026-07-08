@@ -66,7 +66,7 @@ EmployeeDetails: any = null;
 
 getEmployeeDetails(employeeId: string): void {
   const encode = encodeURIComponent(employeeId);
-  this.http.get(`https://localhost:7269/api/User/GetEmployeeById/${encode}`)
+  this.http.get(`/api/User/GetEmployeeById/${encode}`)
     .subscribe({
       next: (data: any) => {
         this.EmployeeDetails = data;  // Wrap in arra     // Make sure to call this!
@@ -110,90 +110,23 @@ closePopup() {
 // Updated confirmAction method
 confirmAction() {
   this.showConfirmationPopup = false;
-  this.showCertificateGenerated = true;
-  
-  // Generate and store certificate
   this.generateAndStoreCertificate();
-  
   console.log("Approved:", this.EmployeeDetails.employee_name);
 }
 
-// New method to generate PDF and store in database
+// New method to generate PDF and store in database server-side
 generateAndStoreCertificate() {
-  const certificateElement = document.getElementById('certificate-to-download');
-  if (certificateElement) {
-    certificateElement.classList.add('export-mode');
-    
-    import('html2pdf.js').then((module) => {
-      const html2pdf = module.default;
-      const opt = {
-        margin: 0,
-        filename: 'cmrl_certificate.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      
-      // Wait briefly to ensure any style/layout rendering is complete
-      setTimeout(() => {
-        html2pdf().from(certificateElement).set(opt).outputPdf('datauristring').then((pdfDataUri: string) => {
-          // Extract base64 from data URI (remove "data:application/pdf;base64," prefix)
-          const base64String = pdfDataUri.split(',')[1];
-          
-          // Store in database
-          this.storeCertificateInDatabase(base64String);
-          
-          // Optional cleanup
-          certificateElement.classList.remove('export-mode');
-        }).catch((err: any) => {
-          console.error('Error generating PDF:', err);
-          certificateElement.classList.remove('export-mode');
-        });
-      }, 300);
-      
-    }).catch(err => {
-      console.error('Error loading html2pdf:', err);
-    });
-  } else {
-    console.error('Certificate element not found.');
-  }
-}
-
-// Method to store certificate in database and delete from initiate table
-// Method to store certificate in database and delete from initiate table
-storeCertificateInDatabase(base64String: string) {
-  const generatedData = {
-    employeeId: this.EmployeeDetails.employee_id,        // Use lowercase from your data
-    employeeName: this.EmployeeDetails.employee_name,    // Use lowercase from your data
-    competencyCertificate: base64String,
-    validity: null // Set validity as needed
-  };
-  
-  // Call API to store in Generated table
-  this.http.post('https://localhost:7269/api/User/AddGenerated', generatedData).subscribe({
+  this.isLoading = true;
+  this.http.post(`/api/User/ApproveAndGenerateCertificate/${this.EmployeeDetails.employee_id}`, {}).subscribe({
     next: (response) => {
-      console.log('Certificate stored successfully:', response);
-      
-      // Delete from initiate table after successful storage
-      this.deleteFromInitiateTable();
+      this.isLoading = false;
+      console.log('Certificate approved and generated successfully server-side:', response);
+      this.showCertificateGenerated = true;
     },
     error: (error) => {
-      console.error('Error storing certificate:', error);
-    }
-  });
-}
-
-// Method to delete from initiate table
-deleteFromInitiateTable() {
-  
-  const deleteUrl = `https://localhost:7269/api/User/DeleteFromInitiate/${this.EmployeeDetails.employee_id}`;
-  
-  this.http.delete(deleteUrl).subscribe({
-    next: (response) => {
-      console.log('Employee deleted from initiate table:', response);
-    },
-    error: (error) => {
-      console.error('Error deleting from initiate table:', error);
+      this.isLoading = false;
+      console.error('Error generating certificate server-side:', error);
+      alert('Failed to generate certificate on the server: ' + (error.error?.message || error.message));
     }
   });
 }

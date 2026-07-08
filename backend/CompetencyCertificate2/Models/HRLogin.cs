@@ -1,4 +1,4 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,7 +11,7 @@ namespace CompetencyCertificate.Models
         [Column(TypeName = "NVARCHAR(60)")]
         public string? employee_id { get; set; }
 
-        [Column(TypeName ="NVARCHAR(60)")]
+        [Column(TypeName = "NVARCHAR(256)")]
         public string? Password { get; set; } = "";
         [Column(TypeName = "NVARCHAR(60)")]
         [SwaggerIgnore]

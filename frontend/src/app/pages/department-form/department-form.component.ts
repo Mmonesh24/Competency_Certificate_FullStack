@@ -43,7 +43,7 @@ export class DepartmentFormComponent {
   }
  submitForm(){
    if (this.Data.departmentName && this.Data.departmentCode) {
-    this.http.post("https://localhost:7269/api/User/AddDepartment", this.Data)
+    this.http.post("/api/User/AddDepartment", this.Data)
       .subscribe(response => {
         alert("Form submitted successfully");
         location.reload(); // Reload the page to reflect changes

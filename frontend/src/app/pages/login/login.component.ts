@@ -43,8 +43,7 @@ export class LoginComponent implements OnInit {
   http = inject(HttpClient);
   router = inject(Router);
 onLogin() {
-  debugger;
-  this.http.post("https://localhost:7269/api/User/Login", this.LoginObj).subscribe({
+  this.http.post("/api/User/Login", this.LoginObj).subscribe({
   next: (res: any) => {
     console.log('Login API response:', res);
     if (res && res.token) {

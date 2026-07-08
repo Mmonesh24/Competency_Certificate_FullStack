@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -14,7 +14,7 @@ namespace CompetencyCertificate.Models
         [JsonIgnore]
         
         public Employee? Employee { get; set; }
-        [Column(TypeName = "NVARCHAR(60)")]
+        [Column(TypeName = "NVARCHAR(256)")]
         [Required]
         public string? Password { get; set; }
 

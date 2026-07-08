@@ -34,7 +34,7 @@ export class ContractorEditComponent implements OnInit{
   }
 getcontractor(contractorName: string) {
   var encode = encodeURIComponent(contractorName);
-  this.http.get(`https://localhost:7269/api/User/GetContractorByName/${encode}`)
+  this.http.get(`/api/User/GetContractorByName/${encode}`)
     .subscribe({
       next: (data: any) => {
         this.data = { ...this.data, ...data };
@@ -96,7 +96,7 @@ onPhotoUpload(event: any): void {
  submitForm(){
   this.editedData = {...this.data};
   console.log("edited data:",this.editedData);
-  this.http.put(`https://localhost:7269/api/User/EditContractor${encodeURIComponent(this.editedData.contractorName)}`, this.editedData).subscribe({
+  this.http.put(`/api/User/EditContractor${encodeURIComponent(this.editedData.contractorName)}`, this.editedData).subscribe({
     next:(response)=>{
       console.log('Contractor edited succesfully',response)
       alert("edited successfully")

@@ -28,7 +28,7 @@ export class ViewDesignationForEditComponent implements OnInit {
     this.FetchDesignations();
   }
   FetchDesignations(): void {
-    this.http.get("https://localhost:7269/api/User/GetAllDesignations").subscribe((data:any)=>{
+    this.http.get("/api/User/GetAllDesignations").subscribe((data:any)=>{
       this.designations = data;
       this.filteredDesignations = [...this.designations];
     })

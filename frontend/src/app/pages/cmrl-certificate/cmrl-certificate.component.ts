@@ -37,7 +37,7 @@ ngOnInit(): void {
 
 getEmployeeDetails(employeeId: string): void {
   const encode = encodeURIComponent(employeeId);
-  this.http.get(`https://localhost:7269/api/User/GetEmployeeById/${encode}`)
+  this.http.get(`/api/User/GetEmployeeById/${encode}`)
     .subscribe({
       next: (data: any) => {
         this.EmployeeDetails = data;  // Wrap in arra     // Make sure to call this!
@@ -65,7 +65,7 @@ getEmployeeDetails(employeeId: string): void {
     });
 }
 getlogo(name: string): void {
-  this.http.get<any>(`https://localhost:7269/api/User/GetContractorByName/${encodeURIComponent(name)}`).subscribe({
+  this.http.get<any>(`/api/User/GetContractorByName/${encodeURIComponent(name)}`).subscribe({
     next: (data) => {
       if (!data.logo) {
         console.warn('No logo found for contractor');

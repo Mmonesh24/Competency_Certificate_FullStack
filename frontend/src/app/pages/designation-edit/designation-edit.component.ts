@@ -29,7 +29,7 @@ constructor(private http: HttpClient, private router: Router, private route: Act
   }
   getdesignation(designation_Name: string){
     var encode = encodeURIComponent(designation_Name);
-    this.http.get(`https://localhost:7269/api/User/GetDesignationByDesignationName/${encode}`)
+    this.http.get(`/api/User/GetDesignationByDesignationName/${encode}`)
       .subscribe({next :(data : any)=>{
           this.Data={...this.Data,...data};
           console.log("Fetched Data : ",this.Data)
@@ -62,7 +62,7 @@ constructor(private http: HttpClient, private router: Router, private route: Act
  submitForm(){
   this.editedData = {...this.Data};
   console.log("edited data:",this.editedData);
-  this.http.put(`https://localhost:7269/api/User/UpdateDesignation/${encodeURIComponent(this.editedData.designation_Name)}`, this.editedData).subscribe({
+  this.http.put(`/api/User/UpdateDesignation/${encodeURIComponent(this.editedData.designation_Name)}`, this.editedData).subscribe({
     next:(response)=>{
       console.log('designation edited succesfully',response)
       alert("edited successfully")

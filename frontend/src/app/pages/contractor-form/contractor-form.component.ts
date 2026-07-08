@@ -69,7 +69,7 @@ onPhotoUpload(event: any): void {
 
 submitForm(){
   if(this.data.contractorName && this.data.Logo){
-    this.http.post("https://localhost:7269/api/User/AddContractor",this.data).subscribe(response =>{
+    this.http.post("/api/User/AddContractor",this.data).subscribe(response =>{
       alert("form submitted successfuly");
       location.reload();
     },error=>{

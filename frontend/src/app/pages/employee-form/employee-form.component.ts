@@ -52,13 +52,13 @@ this.getDesignation("NonExecutive")
  // Remove the fetchSubDepartment call from here since DepartmentName is null
 }
 fetchContractors(): void {
-  this.http.get("https://localhost:7269/api/User/GetAllContractors").subscribe((data:any)=>{
+  this.http.get("/api/User/GetAllContractors").subscribe((data:any)=>{
     this.contractors = data;
     console.log('Contractors data fetched:', this.contractors);
   });
 }
 fetchDepartment():void{
-  this.http.get("https://localhost:7269/api/User/GetAllDepartments").subscribe((data:any)=>{
+  this.http.get("/api/User/GetAllDepartments").subscribe((data:any)=>{
     this.department = data;
   });
 }
@@ -76,7 +76,7 @@ fetchSubDepartment(departmentName: string): void {
   console.log('Fetching subdepartments for department:', departmentName);
   
   // Try the exact URL format that worked in your test
-  const url = `https://localhost:7269/api/User/GetSbDepartmentsByDepartmentId/${encodeURIComponent(departmentName)}`;
+  const url = `/api/User/GetSbDepartmentsByDepartmentId/${encodeURIComponent(departmentName)}`;
   console.log('API URL:', url);
   
   this.http.get(url).subscribe({
@@ -143,7 +143,7 @@ onEmployeeTypeChange(): void {
   }
 }
 getDesignation(type:string){
-  this.http.get(`https://localhost:7269/api/User/GetDesignationByType/${encodeURIComponent(type)}`).subscribe({
+  this.http.get(`/api/User/GetDesignationByType/${encodeURIComponent(type)}`).subscribe({
     next:(data:any)=>{
       this.designation = data;
       console.log("Designation of ",type,"is : ",this.designation);
@@ -193,7 +193,7 @@ onPassbookUpload(event: Event): void {
 submitForm() {
   console.log('Submitting employee data:', this.employeeData);
 
-  this.http.post("https://localhost:7269/api/User/AddEmployee", this.employeeData).subscribe({
+  this.http.post("/api/User/AddEmployee", this.employeeData).subscribe({
     next: (response) => {
       console.log('Employee registered successfully:', response);
 
@@ -205,7 +205,7 @@ submitForm() {
       console.log('Employee login data:', this.emplogin);
 
       if (this.employeeData.employee_type === 0) {
-        this.http.post("https://localhost:7269/api/User/AddEmployeeLogin", this.emplogin).subscribe({
+        this.http.post("/api/User/AddEmployeeLogin", this.emplogin).subscribe({
           next: (loginResponse) => {
             alert("✅ Employee and login created successfully!");
             location.reload();

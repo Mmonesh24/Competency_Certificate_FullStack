@@ -45,7 +45,7 @@ export class CertificateApproveComponent implements OnInit {
     this.isLoading = true;
     const encodedSubDepartment = encodeURIComponent(subDepartment);
 
-    this.http.get(`https://localhost:7269/api/User/GetAllInitiateBySubdepartment/${encodedSubDepartment}`)
+    this.http.get(`/api/User/GetAllInitiateBySubdepartment/${encodedSubDepartment}`)
       .subscribe((data: any) => {
         console.log('Fetched initialized IDs:', data);
         this.InitializedId = data.data;
@@ -83,7 +83,7 @@ export class CertificateApproveComponent implements OnInit {
 
   getEmployeeDetails(employeeId: string, callback: () => void): void {
     const encode = encodeURIComponent(employeeId);
-    this.http.get(`https://localhost:7269/api/User/GetEmployeeById/${encode}`)
+    this.http.get(`/api/User/GetEmployeeById/${encode}`)
       .subscribe((data: any) => {
         this.EmployeeDetails.push({ employeeId, data });
         console.log(`Employee details fetched for ID ${employeeId}:`, data);

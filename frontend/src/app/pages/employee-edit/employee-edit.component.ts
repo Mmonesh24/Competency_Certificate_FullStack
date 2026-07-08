@@ -66,7 +66,7 @@ getemployeeData(id: string | null): void {
     return;
   }
 
-  this.http.get(`https://localhost:7269/api/User/GetEmployeeById/${encodeURIComponent(id)}`).subscribe({
+  this.http.get(`/api/User/GetEmployeeById/${encodeURIComponent(id)}`).subscribe({
     next: (data: any) => {
       this.employeeData = { ...this.employeeData, ...data };
       console.log('Employee data fetched:', this.employeeData);
@@ -94,20 +94,20 @@ getemployeeData(id: string | null): void {
 }
 
 fetchContractors(): void {
-  this.http.get("https://localhost:7269/api/User/GetAllContractors").subscribe((data:any)=>{
+  this.http.get("/api/User/GetAllContractors").subscribe((data:any)=>{
     this.contractors = data;
     console.log('Contractors data fetched:', this.contractors);
   });
 }
 
 fetchDepartment():void{
-  this.http.get("https://localhost:7269/api/User/GetAllDepartments").subscribe((data:any)=>{
+  this.http.get("/api/User/GetAllDepartments").subscribe((data:any)=>{
     this.department = data;
   });
 }
 
 fetchDesignation():void{
-  this.http.get("https://localhost:7269/api/User/GetAllDesignations").subscribe((data:any)=>{
+  this.http.get("/api/User/GetAllDesignations").subscribe((data:any)=>{
     this.designation = data;
     console.log('Designation data fetched:', this.designation);
   });
@@ -125,7 +125,7 @@ fetchSubDepartment(departmentName: string): void {
   console.log('Fetching subdepartments for department:', departmentName);
   
   // Try the exact URL format that worked in your test
-  const url = `https://localhost:7269/api/User/GetSbDepartmentsByDepartmentId/${encodeURIComponent(departmentName)}`;
+  const url = `/api/User/GetSbDepartmentsByDepartmentId/${encodeURIComponent(departmentName)}`;
   console.log('API URL:', url);
   
   this.http.get(url).subscribe({
@@ -237,7 +237,7 @@ submitForm() {
   console.log('Edited Form', this.employeeedited);
   var encode = encodeURIComponent(this.employeeedited.employee_id);
 
-  this.http.put(`https://localhost:7269/api/User/UpdateEmployee/${encode}`, this.employeeedited).subscribe({
+  this.http.put(`/api/User/UpdateEmployee/${encode}`, this.employeeedited).subscribe({
     next: (response) => {
       console.log('Employee registered successfully:', response);
 
@@ -250,12 +250,12 @@ submitForm() {
 
       if (this.employeeedited.employee_type === 0) {
         // 🔁 Delete and THEN insert login
-        this.http.delete(`https://localhost:7269/api/User/EmployeeLoginDelete/${encode}`).subscribe({
+        this.http.delete(`/api/User/EmployeeLoginDelete/${encode}`).subscribe({
           next: (deleteResponse) => {
             console.log('Employee login deleted successfully:', deleteResponse);
 
             // ✅ Insert only after delete completes
-            this.http.post("https://localhost:7269/api/User/AddEmployeeLogin", this.emplogin).subscribe({
+            this.http.post("/api/User/AddEmployeeLogin", this.emplogin).subscribe({
               next: (loginResponse) => {
                 alert("✅ Employee and login created successfully!");
                 location.reload();

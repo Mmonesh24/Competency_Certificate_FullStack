@@ -1,4 +1,5 @@
 using CompetencyCertificate.Models;
+using CompetencyCertificate.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -50,12 +51,46 @@ namespace CompetencyCertificate.Controllers
                     var employeeDetails = _context.Employee.FirstOrDefault(e => e.Employee_id == loginDto.EmployeeId);
                     if (employeeDetails == null)
                         return Unauthorized("Employee details not found.");
-                    var token = GenerateJwtToken(employeeDetails.Employee_id.ToString());
+
+                    // Determine Role
+                    string role = "Employee";
+                    if (employeeDetails.Designation_Name == "HR" || 
+                        employeeDetails.DepartmentName == "HR" || 
+                        (employeeDetails.DepartmentName != null && employeeDetails.DepartmentName.ToLower() == "human resource"))
+                    {
+                        role = "HR";
+                    }
+                    else if (employeeDetails.Employee_type == EmployeeType.Executive && 
+                             (employeeDetails.Designation_Name == "HOD" || 
+                              (employeeDetails.Designation_Name != null && employeeDetails.Designation_Name.ToLower() == "head of department")))
+                    {
+                        role = "HOD";
+                    }
+                    else if (employeeDetails.Employee_type == EmployeeType.Executive)
+                    {
+                        role = "Executive";
+                    }
+
+                    var token = GenerateJwtToken(employeeDetails.Employee_id.ToString(), role);
+                    
+                    var sanitizedDetails = new
+                    {
+                        Employee_id = employeeDetails.Employee_id,
+                        Employee_name = employeeDetails.Employee_name,
+                        Employee_type = employeeDetails.Employee_type,
+                        CategoryName = employeeDetails.CategoryName,
+                        ContractorName = employeeDetails.ContractorName,
+                        Designation_Name = employeeDetails.Designation_Name,
+                        DepartmentName = employeeDetails.DepartmentName,
+                        SubDepartmentName = employeeDetails.SubDepartmentName,
+                        role = role
+                    };
+
                     return Ok(new
                     {
                         token,
                         message = "Executive Login successful",
-                        employeeDetails
+                        employeeDetails = sanitizedDetails
                     });
                 }
 
@@ -66,12 +101,23 @@ namespace CompetencyCertificate.Controllers
                     var employeeDetails = hrLogin; // reuse name for consistency
                     if (employeeDetails == null)
                         return Unauthorized("Employee details not found.");
-                    var token = GenerateJwtToken(employeeDetails.employee_id.ToString());
+                    
+                    string role = "HR";
+                    var token = GenerateJwtToken(employeeDetails.employee_id.ToString(), role);
+                    
+                    var sanitizedDetails = new
+                    {
+                        Employee_id = employeeDetails.employee_id,
+                        Employee_name = "HR Administrator",
+                        Designation = employeeDetails.Designation,
+                        role = role
+                    };
+
                     return Ok(new
                     {
                         token,
                         message = "HR Login successful",
-                        employeeDetails
+                        employeeDetails = sanitizedDetails
                     });
                 }
 
@@ -85,7 +131,7 @@ namespace CompetencyCertificate.Controllers
         }
 
         // Helper method for token generation
-        private string GenerateJwtToken(string userId)
+        private string GenerateJwtToken(string userId, string role)
         {
             var jwtSecret = _configuration["AppSettings:JWTSecret"];
             var signInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
@@ -93,8 +139,9 @@ namespace CompetencyCertificate.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, userId)
-        }),
+                    new Claim(ClaimTypes.NameIdentifier, userId),
+                    new Claim(ClaimTypes.Role, role)
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials(signInKey, SecurityAlgorithms.HmacSha256Signature)
             };
@@ -106,6 +153,7 @@ namespace CompetencyCertificate.Controllers
 
 
 
+        [Authorize(Roles = "HR")]
         [HttpPost("AddEmployee")]
         public IActionResult AddEmployee(Employee obj)
         {
@@ -139,6 +187,7 @@ namespace CompetencyCertificate.Controllers
             return BadRequest(new { message = "Photo is required." });
         }
 
+        [Authorize(Roles = "HR")]
         [HttpPost("AddEmployeeLogin")]
         public IActionResult AddEmployeeLogin(EmployeeLogin obj)
         {
@@ -154,6 +203,8 @@ namespace CompetencyCertificate.Controllers
             _context.SaveChanges();
             return Ok(new { message = "Employee login added successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPost("AddContractor")]
         public IActionResult AddContractor(Contractor obj)
         {
@@ -165,6 +216,8 @@ namespace CompetencyCertificate.Controllers
             _context.SaveChanges();
             return Ok(new { message = "Contractor added successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPost("AddHRLogin")]
         public IActionResult AddHRLogin(HRLogin obj)
         {
@@ -180,6 +233,8 @@ namespace CompetencyCertificate.Controllers
             _context.SaveChanges();
             return Ok(new { message = "HR login added successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPost("AddDepartment")]
         public IActionResult AddDepartment(Department obj)
         {
@@ -187,12 +242,16 @@ namespace CompetencyCertificate.Controllers
             _context.SaveChanges();
             return Ok(new { message = "Department added successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPost("AddSubDepartment")]
         public IActionResult AddSubDeparment(SubDepartment obj) { 
             _context.SubDeparment.Add(obj);
             _context.SaveChanges();
             return Ok(new { message = "SubDepartment added successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPost("AddDesignation")]
         public IActionResult AddDesignation([FromBody] Designation obj)
         {
@@ -451,6 +510,7 @@ namespace CompetencyCertificate.Controllers
             public string CompetencyCertificate { get; set; } = ""; // Base64 string
             public string? Validity { get; set; } = null;
         }
+        [Authorize(Roles = "HR,HOD")]
         [HttpPost("AddGenerated")]
         public IActionResult AddGenerated([FromBody] GeneratedDto obj)
         {
@@ -481,11 +541,94 @@ namespace CompetencyCertificate.Controllers
                 return BadRequest(new { message = "Error storing certificate", error = ex.Message });
             }
         }
+
+        [Authorize(Roles = "HR,HOD")]
+        [HttpPost("ApproveAndGenerateCertificate/{employeeId}")]
+        public async Task<IActionResult> ApproveAndGenerateCertificate(string employeeId)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // 1. Verify certificate initiation
+                    var initiateRecord = await _context.Initiate.FirstOrDefaultAsync(i => i.employee_id == employeeId);
+                    if (initiateRecord == null)
+                    {
+                        return BadRequest(new { message = "Certificate process has not been initiated for this employee." });
+                    }
+
+                    // 2. Fetch full employee details
+                    var employee = await _context.Employee
+                        .FirstOrDefaultAsync(e => e.Employee_id == employeeId);
+                    if (employee == null)
+                    {
+                        return NotFound(new { message = "Employee not found." });
+                    }
+
+                    byte[] logoBytes = Array.Empty<byte>();
+                    if (!string.IsNullOrEmpty(employee.ContractorName))
+                    {
+                        var contractor = await _context.Contractor
+                            .FirstOrDefaultAsync(c => c.ContractorName == employee.ContractorName);
+                        if (contractor != null && contractor.Logo != null)
+                        {
+                            logoBytes = contractor.Logo;
+                        }
+                    }
+
+                    // 3. Generate PDF server-side
+                    string validityText = DateTime.UtcNow.AddYears(1).ToString("dd-MM-yyyy");
+                    byte[] pdfBytes = QuestPdfGeneratorService.GenerateCertificatePdf(
+                        employee.Employee_name,
+                        employee.Employee_id,
+                        employee.DepartmentName ?? "N/A",
+                        employee.SubDepartmentName ?? "N/A",
+                        employee.Designation_Name ?? "N/A",
+                        validityText,
+                        logoBytes
+                    );
+
+                    // 4. Save to Generated (Upsert)
+                    var existingGenerated = await _context.Generated.FirstOrDefaultAsync(g => g.EmployeeId == employeeId);
+                    if (existingGenerated != null)
+                    {
+                        existingGenerated.CompetencyCertificate = pdfBytes;
+                        existingGenerated.Validity = validityText;
+                        _context.Generated.Update(existingGenerated);
+                    }
+                    else
+                    {
+                        var generated = new Generated
+                        {
+                            EmployeeId = employeeId,
+                            CompetencyCertificate = pdfBytes,
+                            Validity = validityText
+                        };
+                        _context.Generated.Add(generated);
+                    }
+
+                    // 5. Remove from Initiate
+                    _context.Initiate.Remove(initiateRecord);
+
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    return Ok(new { message = "Certificate approved and generated successfully." });
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return StatusCode(500, new { message = "Failed to generate certificate", error = ex.Message });
+                }
+            }
+        }
+
         public class AddInitiateDto
         {
             [Column(TypeName = "nvarchar(60)")]
             public string employee_id { get; set; } = "";
         }
+        [Authorize(Roles = "HR,HOD,Executive")]
         [HttpPost("AddInitiate")]
         public async Task<IActionResult> AddInitiate(AddInitiateDto dto)
         {
@@ -587,17 +730,18 @@ namespace CompetencyCertificate.Controllers
             return Ok(employee);
         }
 
-[HttpPut("UpdateEmployee/{id}")]
-public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmployee)
-{
-    var existingEmployee = _context.Employee.FirstOrDefault(e => e.Employee_id == id);
-    if (existingEmployee == null)
-    {
-        return NotFound("Employee not found.");
-    }
+        [Authorize(Roles = "HR")]
+        [HttpPut("UpdateEmployee/{id}")]
+        public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmployee)
+        {
+            var existingEmployee = _context.Employee.FirstOrDefault(e => e.Employee_id == id);
+            if (existingEmployee == null)
+            {
+                return NotFound("Employee not found.");
+            }
 
-    // Apply updates only to scalar values (not navigation properties directly)
-    _context.Entry(existingEmployee).CurrentValues.SetValues(updatedEmployee);
+            // Apply updates only to scalar values (not navigation properties directly)
+            _context.Entry(existingEmployee).CurrentValues.SetValues(updatedEmployee);
 
             // Optional: manually handle navigation properties if needed
             existingEmployee.Employee_name = updatedEmployee.Employee_name;
@@ -623,9 +767,10 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
 
             _context.SaveChanges();
 
-    return Ok(new { message = "Employee updated successfully" });
-}
+            return Ok(new { message = "Employee updated successfully" });
+        }
 
+        [Authorize(Roles = "HR")]
         [HttpDelete("EmployeeLoginDelete/{id}")]
         public IActionResult DeleteEmployeeLogin(string id)
         {
@@ -639,6 +784,7 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             return Ok(new { message = "Employee login deleted" });
         }
 
+        [Authorize(Roles = "HR")]
         [HttpDelete("DeleteEmployee/{id}")]
         public IActionResult DeleteEmployee(string id)
         {
@@ -651,6 +797,8 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             _context.SaveChanges();
             return Ok(new { message = "Employee deleted successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPut("UpdateDepartment/{id}")]
         public IActionResult UpdateDepartment(string id, [FromBody] Department updatedDepartment)
         {
@@ -666,6 +814,8 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
 
             return Ok(new { message = "Deapartment updated successfully" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPut("UpdateSubDepartment/{subdept}")]
         public IActionResult UpdateSubDepartment(string subdept, [FromBody] SubDepartment updatedsubdept)
         {
@@ -680,6 +830,7 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             return Ok(new { message = "Sub Department Updated Successfully" });
         }
 
+        [Authorize(Roles = "HR")]
         [HttpDelete("DeleteDepartment/{id}")]
         public IActionResult DeleteDepartment(string id)
         {
@@ -694,6 +845,8 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             return Ok(new { message = "Department Deleted Successfully" });
 
         }
+
+        [Authorize(Roles = "HR")]
         [HttpPut("UpdateDesignation/{id}")]
         public IActionResult UpdateDesignation(string id, [FromBody] Designation updatedDesignation)
         {
@@ -709,6 +862,7 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             return Ok(new { message = "Designation Updated" });
         }
 
+        [Authorize(Roles = "HR")]
         [HttpPut("EditContractor/{contractorname}")]
         public IActionResult EditContractor(string contractorname, [FromBody] Contractor updatedContractor) {
             var existingContractor = _context.Contractor.Find(contractorname);
@@ -721,6 +875,8 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             _context.SaveChanges();
             return Ok(new { message = "Contractor Updated" });
         }
+
+        [Authorize(Roles = "HR")]
         [HttpDelete("DeleteDesignation/{id}")]
         public IActionResult DeleteDesignation(string id)
         {
@@ -733,8 +889,10 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             _context.SaveChanges();
             return Ok(new { message = "Designation Deleted" });
         }
+
+        [Authorize(Roles = "HR,HOD")]
         [HttpDelete("DeleteInitiate/{id}")]
-        public IActionResult DeleteInitiate(int id)
+        public IActionResult DeleteInitiate(string id)
         {
             var initiate = _context.Initiate.Find(id);
             if (initiate == null)
@@ -745,6 +903,8 @@ public IActionResult UpdateEmployee(string id, [FromBody] Employee updatedEmploy
             _context.SaveChanges();
             return Ok(new { message = "Initiate deleted successfully" });
         }
+
+        [Authorize(Roles = "HR,HOD")]
         [HttpDelete("DeleteFromInitiate/{employeeId}")]
         public IActionResult DeleteFromInitiate(string employeeId)
         {

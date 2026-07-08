@@ -58,7 +58,6 @@ LoggedUserMenuList: any[] = [];
 
 ngOnInit(): void {
   const loggedData = localStorage.getItem('userApp');
-  debugger
   if (loggedData) {
     const userData = JSON.parse(loggedData);
 

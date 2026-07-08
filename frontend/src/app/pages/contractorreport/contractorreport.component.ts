@@ -78,7 +78,7 @@ export class ContractorreportComponent implements OnInit {
   }
 
   getdata() {
-    this.http.get("https://localhost:7269/api/User/GetAllContractors").subscribe(
+    this.http.get("/api/User/GetAllContractors").subscribe(
       (res: any) => {
         this.data = res.map((contractor: any) => {
           if (contractor.logo) {

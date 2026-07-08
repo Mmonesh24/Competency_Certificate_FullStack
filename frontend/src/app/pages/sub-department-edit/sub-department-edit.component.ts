@@ -53,7 +53,7 @@ export class SubDepartmentEditComponent implements OnInit{
       alert("No Data")
       return
     }
-    this.http.get(`https://localhost:7269/api/User/GetSubDepartmentByName/${encodeURIComponent(subdept)}`).subscribe({
+    this.http.get(`/api/User/GetSubDepartmentByName/${encodeURIComponent(subdept)}`).subscribe({
       next:(data:any)=>{
           this.Data = {...this.Data,...data};
           console.log("Fetched Data : ",this.Data)
@@ -65,7 +65,7 @@ export class SubDepartmentEditComponent implements OnInit{
  submitForm(){
   this.editedData = {...this.Data};
   console.log("edited data:",this.editedData);
-  this.http.put(`https://localhost:7269/api/User/UpdateSubDepartment/${encodeURIComponent(this.editedData.subDepartmentName)}`, this.editedData).subscribe({
+  this.http.put(`/api/User/UpdateSubDepartment/${encodeURIComponent(this.editedData.subDepartmentName)}`, this.editedData).subscribe({
     next:(response)=>{
       console.log('designation edited succesfully',response)
       alert("edited successfully")

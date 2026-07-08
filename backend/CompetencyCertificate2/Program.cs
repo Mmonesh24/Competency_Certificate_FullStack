@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -74,13 +74,23 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") 
+    ?? builder.Configuration.GetConnectionString("DevConnection");
 
-var jwtSecret = builder.Configuration["AppSettings:JWTSecret"];
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DevConnection' is not configured.");
+}
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") 
+    ?? builder.Configuration["AppSettings:JWTSecret"];
+
 if (string.IsNullOrEmpty(jwtSecret))
 {
-    throw new InvalidOperationException("JWT Secret is not configured in appsettings.json");
+    throw new InvalidOperationException("JWT Secret is not configured.");
 }
 
 // JWT Authentication
@@ -103,6 +113,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
     };
 });
+
+// Configure QuestPDF Community License
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 var app = builder.Build();
 

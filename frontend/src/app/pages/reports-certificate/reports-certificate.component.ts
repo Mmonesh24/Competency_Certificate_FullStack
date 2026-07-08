@@ -59,7 +59,7 @@ export class ReportsCertificateComponent implements OnInit {
   }
 
   getallGeneratedCertificates(): void {
-    this.http.get<any[]>("https://localhost:7269/api/User/GetAllGenerated").subscribe({
+    this.http.get<any[]>("/api/User/GetAllGenerated").subscribe({
       next: (response) => {
         this.generated = response;
         console.log("Generated certificates:", this.generated);
@@ -71,7 +71,7 @@ export class ReportsCertificateComponent implements OnInit {
         this.generated.forEach((generatedItem) => {
           const encodedEmpId = encodeURIComponent(generatedItem.employeeId);
 
-          this.http.get<any>(`https://localhost:7269/api/User/GetEmployeeById/${encodedEmpId}`).subscribe({
+          this.http.get<any>(`/api/User/GetEmployeeById/${encodedEmpId}`).subscribe({
             next: (employeeData) => {
               generatedItem.name = employeeData.employee_name;
               completedRequests++;
@@ -102,7 +102,7 @@ export class ReportsCertificateComponent implements OnInit {
   getallgeneratedcertificateHod(departmentName: string): void {
     const encodedDepartmentName = encodeURIComponent(departmentName);
 
-    this.http.get<any[]>(`https://localhost:7269/api/User/GetAllGeneratedHod?departmentName=${encodedDepartmentName}`).subscribe({
+    this.http.get<any[]>(`/api/User/GetAllGeneratedHod?departmentName=${encodedDepartmentName}`).subscribe({
       next: (response) => {
         this.generated = response;
         console.log("Generated certificates (HOD):", this.generated);
@@ -113,7 +113,7 @@ export class ReportsCertificateComponent implements OnInit {
         this.generated.forEach((generatedItem) => {
           const encodedEmpId = encodeURIComponent(generatedItem.employeeId);
 
-          this.http.get<any>(`https://localhost:7269/api/User/GetEmployeeById/${encodedEmpId}`).subscribe({
+          this.http.get<any>(`/api/User/GetEmployeeById/${encodedEmpId}`).subscribe({
             next: (employeeData) => {
               generatedItem.name = employeeData.employee_name;
               completedRequests++;
@@ -142,7 +142,7 @@ export class ReportsCertificateComponent implements OnInit {
   getallgeneratedcertificateExecutive(subDepartmentName: string): void {
     const encodedSubDepartmentName = encodeURIComponent(subDepartmentName);
 
-    this.http.get<any[]>(`https://localhost:7269/api/User/GetAllGeneratedExecutive?subDepartmentName=${encodedSubDepartmentName}`)
+    this.http.get<any[]>(`/api/User/GetAllGeneratedExecutive?subDepartmentName=${encodedSubDepartmentName}`)
       .subscribe({
         next: (response) => {
           this.generated = response;
@@ -153,7 +153,7 @@ export class ReportsCertificateComponent implements OnInit {
 
           this.generated.forEach((generatedItem) => {
             const encodedEmpId = encodeURIComponent(generatedItem.employeeId);
-            this.http.get<any>(`https://localhost:7269/api/User/GetEmployeeById/${encodedEmpId}`)
+            this.http.get<any>(`/api/User/GetEmployeeById/${encodedEmpId}`)
               .subscribe({
                 next: (employeeData) => {
                   console.log("employeedata : ", employeeData);

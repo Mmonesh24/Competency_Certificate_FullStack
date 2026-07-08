@@ -101,7 +101,7 @@ ngOnInit(): void {
 }
 }
 getcontractorcount(){
-  this.http.get("https://localhost:7269/api/User/GetCountContractors").subscribe({
+  this.http.get("/api/User/GetCountContractors").subscribe({
     next:(data:any)=>{
       this.fetchlist.contractorcount = data.count;
       console.log("Contractor count : ",this.fetchlist.contractorcount);
@@ -116,7 +116,7 @@ getAllCertificateCountBySubDepartment(SubDepartmentName: string): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get(`https://localhost:7269/api/User/GetCountGeneratedBySubDepartment/${encodedSubDept}`,{
+  this.http.get(`/api/User/GetCountGeneratedBySubDepartment/${encodedSubDept}`,{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -142,7 +142,7 @@ getAllCertificateCountByDepartment(DepartmentName: string): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get(`https://localhost:7269/api/User/GetCountGeneratedByDepartment/${encodedDept}`,{
+  this.http.get(`/api/User/GetCountGeneratedByDepartment/${encodedDept}`,{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   })
     .subscribe({
@@ -169,7 +169,7 @@ getAllCertifficateCount(): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get("https://localhost:7269/api/User/GetCountGenerated",{ 
+  this.http.get("/api/User/GetCountGenerated",{ 
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -194,7 +194,7 @@ getAllDeptartmentCount(): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get("https://localhost:7269/api/User/GetCountDepartments",{
+  this.http.get("/api/User/GetCountDepartments",{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -219,7 +219,7 @@ getAllDesignationCount(): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get("https://localhost:7269/api/User/GetCountDesignations",{
+  this.http.get("/api/User/GetCountDesignations",{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -244,7 +244,7 @@ getAllSubDepartmentCount(): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get("https://localhost:7269/api/User/GetCountSubDepartments",{
+  this.http.get("/api/User/GetCountSubDepartments",{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -269,7 +269,7 @@ getAllEmployeeCount(): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get("https://localhost:7269/api/User/GetCountEmployees",{
+  this.http.get("/api/User/GetCountEmployees",{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -296,10 +296,10 @@ getEmployeeCountByDepartment(DepartmentName: string): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  // https://localhost:7269/api/User/GetCountEmployeesByDepartmentId/Information%20Technology
-  // https://localhost:7269/api/User/GetCountEmployeesByDepartmentId/Information%20Technology
+  // /api/User/GetCountEmployeesByDepartmentId/Information%20Technology
+  // /api/User/GetCountEmployeesByDepartmentId/Information%20Technology
   console.log('calling api for department count');
-  console.log(`API call: https://localhost:7269/api/User/GetCountEmployeesByDepartmentId/${encodedDept}`);
+  console.log(`API call: /api/User/GetCountEmployeesByDepartmentId/${encodedDept}`);
   console.log(`Logged data: ${loggedData}`);
 
 
@@ -307,7 +307,7 @@ getEmployeeCountByDepartment(DepartmentName: string): void {
   // reports.component.ts:303 Logged data: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTAiLCJuYmYiOjE3NTE5MTEyMTUsImV4cCI6MTc1MTkxNDgxNSwiaWF0IjoxNzUxOTExMjE1fQ.8EYAif7pNukyTc7wL2GIHWwkGT86bnpBON_UQfBo8B8","message":"Executive Login successful","employeeDetails":
                                         // {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMDUiLCJuYmYiOjE3NTE5MTEyODIsImV4cCI6MTc1MTkxNDg4MiwiaWF0IjoxNzUxOTExMjgyfQ.GdN7XYhk_4JqN-qs2ThJGY0WzKaQyVk1kMNOijLTduc","message":"Executive Login successful","employeeDetails":
 
-  this.http.get(`https://localhost:7269/api/User/GetCountEmployeesByDepartmentId/${encodedDept}`,{
+  this.http.get(`/api/User/GetCountEmployeesByDepartmentId/${encodedDept}`,{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {
@@ -333,7 +333,7 @@ getEmployeeCountBySubDepartment(SubDepartmentName:string): void {
     const userData = JSON.parse(loggedData);
     token = userData.token;
   }
-  this.http.get(`https://localhost:7269/api/User/GetCountEmployeesBySubDepartmentId/${encodedSubDept}`,{
+  this.http.get(`/api/User/GetCountEmployeesBySubDepartmentId/${encodedSubDept}`,{
     headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
   }).subscribe({
     next: (res: any) => {

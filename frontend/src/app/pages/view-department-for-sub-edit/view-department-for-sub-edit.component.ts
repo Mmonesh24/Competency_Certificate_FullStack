@@ -92,7 +92,7 @@ export class ViewDepartmentForSubEditComponent implements OnInit {
   }
 
   fetchDepartmentData(): void {
-    this.http.get('https://localhost:7269/api/User/GetAllDepartments').subscribe((data: any) => {
+    this.http.get('/api/User/GetAllDepartments').subscribe((data: any) => {
       this.DepartmentData = data;
       this.filteredDepartment = [...this.DepartmentData];
       console.log('Department Data:', this.DepartmentData);
@@ -106,7 +106,7 @@ export class ViewDepartmentForSubEditComponent implements OnInit {
 
   fetchSubDepartments(departmentName: string): void {
     var encode = encodeURIComponent(departmentName);
-    this.http.get(`https://localhost:7269/api/User/GetSbDepartmentsByDepartmentId/${encode}`)
+    this.http.get(`/api/User/GetSbDepartmentsByDepartmentId/${encode}`)
       .subscribe((subDeps: any) => {
         this.subDepartmentsMap[departmentName] = subDeps;
         console.log(`Subdepartments for ${departmentName}:`, subDeps);

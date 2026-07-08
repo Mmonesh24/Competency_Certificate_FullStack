@@ -34,7 +34,7 @@ SubDepartment:any[]=[];
       console.error('Department ID is null');
       return;
     }
-    this.http.get(`https://localhost:7269/api/User/GetSbDepartmentsByDepartmentId/${encodeURIComponent(id)}`).subscribe({
+    this.http.get(`/api/User/GetSbDepartmentsByDepartmentId/${encodeURIComponent(id)}`).subscribe({
       next:(data:any)=>{
           this.SubDepartment = data;
       }

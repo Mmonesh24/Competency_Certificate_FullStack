@@ -57,7 +57,7 @@ constructor(private http: HttpClient, private router: Router, private authServic
 }
   fetchSubDepartment(subDepartment: string): void {
     const encodedSubDepartment = encodeURIComponent(subDepartment);
-   this.http.get(`https://localhost:7269/api/User/GetSbDepartmentsByDepartmentId/${encodedSubDepartment}`).subscribe(
+   this.http.get(`/api/User/GetSbDepartmentsByDepartmentId/${encodedSubDepartment}`).subscribe(
       (data:any) => {
         this.Subdepartment =data;
         console.log('Fetched employees:', data);

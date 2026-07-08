@@ -47,8 +47,7 @@ export const routes: Routes = [
     {
         path:'HomeComponent',
         component: HomeComponent,
-
-        
+        canActivate: [authGuard]
     },
 {
     path:'MasterDataManagement',
@@ -58,10 +57,12 @@ export const routes: Routes = [
   {
     path: 'certificate-initiate',
     component: CertificateInitiateComponent,
+    canActivate: [authGuard]
   },
     {
     path: 'certificate-hod-department',
     component: CertificateHODDepartmentComponent,
+    canActivate: [authGuard]
   },
 {
     path:'CertificateApprove',
@@ -71,6 +72,7 @@ export const routes: Routes = [
   {
     path: 'approve-page',
     component: ApprovePageComponent,
+    canActivate: [authGuard],
      children: [
     {
       path: 'cmrl-certificate',
@@ -80,7 +82,8 @@ export const routes: Routes = [
   },
   {
     path:'reports-certificate',
-    component:ReportsCertificateComponent
+    component:ReportsCertificateComponent,
+    canActivate: [authGuard]
   },
 {
     path:'Reports',

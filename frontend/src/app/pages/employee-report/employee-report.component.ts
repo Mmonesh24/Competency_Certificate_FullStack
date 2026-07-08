@@ -101,7 +101,7 @@ export class EmployeeReportComponent implements OnInit {
   }
   listAllemployees(): void {
     this.http
-      .get('https://localhost:7269/api/User/GetAllEmployees')
+      .get('/api/User/GetAllEmployees')
       .subscribe((data: any) => {
         this.employeelist = data;
         this.filteredEmployee = [...this.employeelist];
@@ -111,7 +111,7 @@ export class EmployeeReportComponent implements OnInit {
     const encodedDept = encodeURIComponent(department);
     this.http
       .get(
-        `https://localhost:7269/api/User/GetEmployeesByDepartmentId/${encodedDept}`
+        `/api/User/GetEmployeesByDepartmentId/${encodedDept}`
       )
       .subscribe((data: any) => {
         this.employeelist = data;
@@ -123,7 +123,7 @@ export class EmployeeReportComponent implements OnInit {
     const encodesubdept = encodeURIComponent(subdepartment);
     this.http
       .get(
-        `https://localhost:7269/api/User/GetEmployeesBySubDepartmentId/${encodesubdept}`
+        `/api/User/GetEmployeesBySubDepartmentId/${encodesubdept}`
       )
       .subscribe((data: any) => {
         this.employeelist = data;
