@@ -61,18 +61,15 @@ ngOnInit(): void {
   if (loggedData) {
     const userData = JSON.parse(loggedData);
 
-    // Ensure keys are correct and use === instead of .Equals()
-    if ((userData.employeeDetails.designation?.toLowerCase() === "hr") || (userData.employeeDetails.departmentName?.toLowerCase()=== "hr") || (userData.employeeDetails.departmentName?.toLowerCase() ==="human resource")) {
+    const role = userData.employeeDetails.role;
+    if (role === 'HR') {
       this.LoggedUserMenuList = this.menulist.HR;
-    } else if (userData.employeeDetails.employee_type === 0) {
-      if ((userData.employeeDetails.designation_Name?.toLowerCase() === "hod") || (userData.employeeDetails.designation_Name?.toLowerCase()==="head of department")) {
-        this.LoggedUserMenuList = this.menulist.HOD;
-      } else {
-        this.LoggedUserMenuList = this.menulist.Executive;
-      }
+    } else if (role === 'HOD') {
+      this.LoggedUserMenuList = this.menulist.HOD;
+    } else if (role === 'Executive') {
+      this.LoggedUserMenuList = this.menulist.Executive;
     } else {
-      // Optional fallback
-      this.LoggedUserMenuList = [];
+      this.LoggedUserMenuList = this.menulist.Executive;
     }
 
     console.log('Menu list for user:', this.LoggedUserMenuList);
