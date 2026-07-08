@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cc-sql-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Pass123!
+    ports:
+      - "1433:1433"
+
+  backend:
+    build:
+      context: ./backend/CompetencyCertificate2
+      dockerfile: Dockerfile
+    container_name: cc-backend-api
+    environment:
+      - DB_CONNECTION=Server=db;Database=CompetencyCertificateDb;User Id=sa;Password=YourStrong@Pass123!;Encrypt=True;TrustServerCertificate=True;
+      - JWT_SECRET=your-super-secret-jwt-key-that-is-at-least-32-characters-long-for-security
+      - PII_ENCRYPTION_KEY=a-very-strong-32-byte-long-key-!
+      - GEMINI_API_KEY=test-api-key
+    ports:
+      - "7269:80"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cc-frontend-app
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend

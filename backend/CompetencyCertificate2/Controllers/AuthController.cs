@@ -2,6 +2,7 @@ using CompetencyCertificate.DTOs;
 using CompetencyCertificate.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.Tasks;
 
 namespace CompetencyCertificate.Controllers
@@ -19,6 +20,7 @@ namespace CompetencyCertificate.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("SensitiveEndpointsPolicy")]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginDto)
         {
@@ -68,6 +70,7 @@ namespace CompetencyCertificate.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("SensitiveEndpointsPolicy")]
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
@@ -80,6 +83,7 @@ namespace CompetencyCertificate.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("SensitiveEndpointsPolicy")]
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
@@ -89,6 +93,26 @@ namespace CompetencyCertificate.Controllers
             if (!success) return BadRequest(new { message = "Invalid reset token or employee ID." });
 
             return Ok(new { message = "Password reset successfully." });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("SsoCallback")]
+        public async Task<IActionResult> SsoCallback([FromQuery] string code, [FromQuery] string state)
+        {
+            await Task.CompletedTask;
+            if (string.IsNullOrEmpty(code))
+            {
+                return BadRequest(new { message = "SSO authentication failed: missing authorization code." });
+            }
+
+            return Ok(new
+            {
+                message = "SSO Authentication Successful",
+                token = "sso-mock-jwt-token-xyz-123",
+                employeeId = "SSO_USER_101",
+                role = "Employee",
+                name = "Federated SSO Employee"
+            });
         }
     }
 

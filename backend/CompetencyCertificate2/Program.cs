@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 using CompetencyCertificate.Models;
 using CompetencyCertificate.Repositories;
 using CompetencyCertificate.Services;
@@ -19,8 +21,11 @@ builder.WebHost.ConfigureKestrel(options =>
     });
 });
 
-// Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddScoped<CompetencyCertificate.Filters.TenantFilter>();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<CompetencyCertificate.Filters.TenantFilter>();
+});
 
 // CORS Configuration - More permissive for development
 builder.Services.AddCors(options =>
@@ -132,6 +137,36 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Add Rate Limiting Services
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+    {
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "global",
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 100,
+                QueueLimit = 10,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                Window = TimeSpan.FromMinutes(1)
+            });
+    });
+
+    options.AddTokenBucketLimiter("SensitiveEndpointsPolicy", tokenOptions =>
+    {
+        tokenOptions.TokenLimit = 20;
+        tokenOptions.QueueLimit = 2;
+        tokenOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        tokenOptions.ReplenishmentPeriod = TimeSpan.FromSeconds(10);
+        tokenOptions.TokensPerPeriod = 5;
+        tokenOptions.AutoReplenishment = true;
+    });
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
 // Configure QuestPDF Community License
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
@@ -147,6 +182,7 @@ if (app.Environment.IsDevelopment())
 
 // CRITICAL: CORS must be applied BEFORE other middleware
 app.UseCors("AllowAngularApp"); // This uses the default policy
+app.UseRateLimiter();
 
 // Alternative: Use named policy
 // app.UseCors("AllowAngularApp");
