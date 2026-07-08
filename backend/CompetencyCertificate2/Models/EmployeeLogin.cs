@@ -7,14 +7,14 @@ namespace CompetencyCertificate.Models
     public class EmployeeLogin
     {
         [Key]
-        [Column(TypeName = "NVARCHAR(60)")]
+        [MaxLength(60)]
         [ForeignKey("Employee")]
         public string? employee_id { get; set; }
 
         [JsonIgnore]
         
         public Employee? Employee { get; set; }
-        [Column(TypeName = "NVARCHAR(256)")]
+        [MaxLength(256)]
         [Required]
         public string? Password { get; set; }
 

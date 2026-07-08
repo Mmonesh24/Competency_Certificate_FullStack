@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompetencyCertificate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260708091410_InitialSupabasePostgres")]
+    [Migration("20260708103543_InitialSupabasePostgres")]
     partial class InitialSupabasePostgres
     {
         /// <inheritdoc />
@@ -68,7 +68,8 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.Contractor", b =>
                 {
                     b.Property<string>("ContractorName")
-                        .HasColumnType("NVARCHAR(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<byte[]>("Logo")
                         .IsRequired()
@@ -82,11 +83,13 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.Department", b =>
                 {
                     b.Property<string>("DepartmentName")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("DepartmentCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.HasKey("DepartmentName");
 
@@ -96,11 +99,13 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.Designation", b =>
                 {
                     b.Property<string>("Designation_Name")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("DesignationCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<int>("designation_type")
                         .HasColumnType("integer");
@@ -113,56 +118,69 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.Employee", b =>
                 {
                     b.Property<string>("Employee_id")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("AadharNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
 
                     b.Property<string>("BankAccountNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("BankName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("BloodGroup")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<int>("CategoryName")
                         .HasColumnType("integer");
 
                     b.Property<string>("ContactNo")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("ContractorName")
-                        .HasColumnType("NVARCHAR(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<DateTime>("DOB")
                         .HasColumnType("date");
 
                     b.Property<string>("DepartmentName")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("Designation_Name")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("EPF_UAN_NO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("ESA_NO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("EmerContactNo")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("Employee_name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<int>("Employee_type")
                         .HasColumnType("integer");
@@ -172,7 +190,7 @@ namespace CompetencyCertificate.Migrations
 
                     b.Property<byte[]>("Passbook")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<string>("PassbookBase64")
                         .HasColumnType("text");
@@ -188,7 +206,8 @@ namespace CompetencyCertificate.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("SubDepartmentName")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.HasKey("Employee_id");
 
@@ -206,11 +225,13 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.EmployeeLogin", b =>
                 {
                     b.Property<string>("employee_id")
-                        .HasColumnType("NVARCHAR(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(256)");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("employee_id");
 
@@ -220,14 +241,16 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.Generated", b =>
                 {
                     b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<byte[]>("CompetencyCertificate")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<string>("Validity")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.HasKey("EmployeeId");
 
@@ -237,14 +260,17 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.HRLogin", b =>
                 {
                     b.Property<string>("employee_id")
-                        .HasColumnType("NVARCHAR(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("Designation")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("NVARCHAR(256)");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("employee_id");
 
@@ -254,7 +280,8 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.Initiate", b =>
                 {
                     b.Property<string>("employee_id")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<int>("ApprovalLevel")
                         .HasColumnType("integer");
@@ -267,10 +294,12 @@ namespace CompetencyCertificate.Migrations
             modelBuilder.Entity("CompetencyCertificate.Models.SubDepartment", b =>
                 {
                     b.Property<string>("SubDepartmentName")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("DepartmentName")
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.HasKey("SubDepartmentName");
 

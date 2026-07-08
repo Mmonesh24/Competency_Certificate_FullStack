@@ -36,7 +36,7 @@ namespace CompetencyCertificate.Migrations
                 name: "Contractor",
                 columns: table => new
                 {
-                    ContractorName = table.Column<string>(type: "NVARCHAR(60)", nullable: false),
+                    ContractorName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     Logo = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
                 constraints: table =>
@@ -48,8 +48,8 @@ namespace CompetencyCertificate.Migrations
                 name: "Department",
                 columns: table => new
                 {
-                    DepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    DepartmentCode = table.Column<string>(type: "nvarchar(60)", nullable: false)
+                    DepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    DepartmentCode = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,9 +60,9 @@ namespace CompetencyCertificate.Migrations
                 name: "Designation",
                 columns: table => new
                 {
-                    Designation_Name = table.Column<string>(type: "nvarchar(60)", nullable: false),
+                    Designation_Name = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     designation_type = table.Column<int>(type: "integer", nullable: false),
-                    DesignationCode = table.Column<string>(type: "nvarchar(60)", nullable: false)
+                    DesignationCode = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,9 +73,9 @@ namespace CompetencyCertificate.Migrations
                 name: "HRLogin",
                 columns: table => new
                 {
-                    employee_id = table.Column<string>(type: "NVARCHAR(60)", nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR(256)", nullable: true),
-                    Designation = table.Column<string>(type: "NVARCHAR(60)", nullable: false)
+                    employee_id = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Password = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Designation = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,8 +86,8 @@ namespace CompetencyCertificate.Migrations
                 name: "SubDeparment",
                 columns: table => new
                 {
-                    SubDepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    DepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: true)
+                    SubDepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    DepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,28 +103,28 @@ namespace CompetencyCertificate.Migrations
                 name: "Employee",
                 columns: table => new
                 {
-                    Employee_id = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    Employee_name = table.Column<string>(type: "nvarchar(60)", nullable: false),
+                    Employee_id = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Employee_name = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     PhotoBase64 = table.Column<string>(type: "text", nullable: true),
                     Photo = table.Column<byte[]>(type: "bytea", nullable: false),
                     Employee_type = table.Column<int>(type: "integer", nullable: false),
                     CategoryName = table.Column<int>(type: "integer", nullable: false),
-                    ContractorName = table.Column<string>(type: "NVARCHAR(60)", nullable: true),
+                    ContractorName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
                     DOB = table.Column<DateTime>(type: "date", nullable: false),
-                    EPF_UAN_NO = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    ESA_NO = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    BankName = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    BankAccountNumber = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    Passbook = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    EPF_UAN_NO = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    ESA_NO = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    BankName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    BankAccountNumber = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Passbook = table.Column<byte[]>(type: "bytea", nullable: false),
                     PassbookBase64 = table.Column<string>(type: "text", nullable: true),
                     JoiningDate = table.Column<DateTime>(type: "date", nullable: false),
-                    Designation_Name = table.Column<string>(type: "nvarchar(60)", nullable: true),
-                    DepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: true),
-                    SubDepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: true),
-                    AadharNo = table.Column<string>(type: "nvarchar(12)", nullable: false),
-                    BloodGroup = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    ContactNo = table.Column<string>(type: "nvarchar(60)", nullable: true),
-                    EmerContactNo = table.Column<string>(type: "nvarchar(60)", nullable: true),
+                    Designation_Name = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
+                    DepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
+                    SubDepartmentName = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
+                    AadharNo = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
+                    BloodGroup = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    ContactNo = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
+                    EmerContactNo = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -156,8 +156,8 @@ namespace CompetencyCertificate.Migrations
                 name: "EmployeeLogin",
                 columns: table => new
                 {
-                    employee_id = table.Column<string>(type: "NVARCHAR(60)", nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR(256)", nullable: false)
+                    employee_id = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Password = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -174,9 +174,9 @@ namespace CompetencyCertificate.Migrations
                 name: "Generated",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    CompetencyCertificate = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Validity = table.Column<string>(type: "nvarchar(60)", nullable: true)
+                    EmployeeId = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    CompetencyCertificate = table.Column<byte[]>(type: "bytea", nullable: false),
+                    Validity = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,7 +193,7 @@ namespace CompetencyCertificate.Migrations
                 name: "Initiate",
                 columns: table => new
                 {
-                    employee_id = table.Column<string>(type: "nvarchar(60)", nullable: false),
+                    employee_id = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     ApprovalLevel = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

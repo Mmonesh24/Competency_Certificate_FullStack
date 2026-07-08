@@ -7,7 +7,7 @@ namespace CompetencyCertificate.Models
     public class Initiate
     {
         [Key]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         
         public string employee_id { get; set; } = "";
         

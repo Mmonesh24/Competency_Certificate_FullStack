@@ -25,11 +25,11 @@ namespace CompetencyCertificate.Models
     public class Employee
     {
         [Key]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string Employee_id { get; set; } = "";
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string Employee_name { get; set; } = "";
 
         public string? PhotoBase64 { get; set; }
@@ -43,7 +43,7 @@ namespace CompetencyCertificate.Models
         [Required]
         public Category CategoryName { get; set; }
 
-        [Column(TypeName = "NVARCHAR(60)")]
+        [MaxLength(60)]
         public string? ContractorName { get; set; }
 
         [ForeignKey(nameof(ContractorName))]
@@ -56,22 +56,21 @@ namespace CompetencyCertificate.Models
         public DateTime DOB { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string EPF_UAN_NO { get; set; } = "";
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string ESA_NO { get; set; } = "";
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string BankName { get; set; } = "";
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string BankAccountNumber { get; set; } = "";
 
-        [Column(TypeName = "varbinary(max)")]
         [JsonIgnore]
         public byte[] Passbook { get; set; } = Array.Empty<byte>(); // Fix: Initialize with Array.Empty<byte>()
 
@@ -82,37 +81,37 @@ namespace CompetencyCertificate.Models
         [Column(TypeName = "date")]
         public DateTime JoiningDate { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         [ForeignKey("Designation")]
         public string? Designation_Name { get; set; }
 
         [JsonIgnore]
         public Designation? Designation { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         [ForeignKey("Department")]
         public string? DepartmentName { get; set; }
 
         [JsonIgnore]
         public Department? Department { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         [ForeignKey("SubDepartment")]
         public string? SubDepartmentName { get; set; }
 
         [JsonIgnore]
         public SubDepartment? SubDepartment { get; set; }
 
-        [Column(TypeName = "nvarchar(12)")]
+        [MaxLength(12)]
         public string AadharNo { get; set; } = "";
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string BloodGroup { get; set; } = "";
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string? ContactNo { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(60)]
         public string? EmerContactNo { get; set; }
 
         public Status Status { get; set; }
