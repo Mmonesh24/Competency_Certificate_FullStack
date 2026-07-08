@@ -193,4 +193,115 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Seed Database on startup if empty
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    
+    // Seed Departments
+    if (!context.Department.Any())
+    {
+        context.Department.AddRange(
+            new Department { DepartmentName = "HR", DepartmentCode = "HR01" },
+            new Department { DepartmentName = "Operations", DepartmentCode = "OP01" }
+        );
+        context.SaveChanges();
+    }
+
+    // Seed Designations
+    if (!context.Designation.Any())
+    {
+        context.Designation.AddRange(
+            new Designation { Designation_Name = "HR", DesignationCode = "HRD01", designation_type = EmployeeType.Executive },
+            new Designation { Designation_Name = "HOD", DesignationCode = "HOD01", designation_type = EmployeeType.Executive },
+            new Designation { Designation_Name = "Signal Engineer", DesignationCode = "EMP01", designation_type = EmployeeType.NonExecutive }
+        );
+        context.SaveChanges();
+    }
+
+    // Seed Contractors
+    if (!context.Contractor.Any())
+    {
+        context.Contractor.Add(new Contractor { ContractorName = "L&T", Logo = new byte[] { 1, 2, 3 } });
+        context.SaveChanges();
+    }
+
+    // Seed HR Logins
+    if (!context.HRLogin.Any())
+    {
+        context.HRLogin.Add(new HRLogin
+        {
+            employee_id = "HR1001",
+            Password = BCrypt.Net.BCrypt.HashPassword("AdminPassword123"),
+            Designation = "HR"
+        });
+        context.SaveChanges();
+    }
+
+    // Seed Employees & Logins
+    if (!context.Employee.Any())
+    {
+        // 1. HOD Employee
+        var hodEmployee = new Employee
+        {
+            Employee_id = "HOD1002",
+            Employee_name = "HOD Administrator",
+            DOB = new DateTime(1985, 5, 12),
+            JoiningDate = new DateTime(2015, 1, 10),
+            Employee_type = EmployeeType.Executive,
+            CategoryName = Category.CMRLEmployee,
+            Designation_Name = "HOD",
+            DepartmentName = "Operations",
+            EPF_UAN_NO = "UAN123456",
+            ESA_NO = "ESA123456",
+            BankName = "State Bank of India",
+            BankAccountNumber = "SBI123456789",
+            AadharNo = "123456789012",
+            BloodGroup = "O+",
+            ContactNo = "9876543210",
+            EmerContactNo = "9876543211",
+            Photo = new byte[] { 0 },
+            Passbook = new byte[] { 0 }
+        };
+        context.Employee.Add(hodEmployee);
+        context.EmployeeLogin.Add(new EmployeeLogin
+        {
+            employee_id = "HOD1002",
+            Password = BCrypt.Net.BCrypt.HashPassword("HodPassword123")
+        });
+
+        // 2. Standard Employee
+        var stdEmployee = new Employee
+        {
+            Employee_id = "EMP1003",
+            Employee_name = "John Doe",
+            DOB = new DateTime(1990, 8, 20),
+            JoiningDate = new DateTime(2020, 3, 1),
+            Employee_type = EmployeeType.NonExecutive,
+            CategoryName = Category.NonCMRLEmployee,
+            ContractorName = "L&T",
+            Designation_Name = "Signal Engineer",
+            DepartmentName = "Operations",
+            EPF_UAN_NO = "UAN789012",
+            ESA_NO = "ESA789012",
+            BankName = "HDFC Bank",
+            BankAccountNumber = "HDFC789012",
+            AadharNo = "987654321098",
+            BloodGroup = "A+",
+            ContactNo = "9988776655",
+            EmerContactNo = "9988776654",
+            Photo = new byte[] { 0 },
+            Passbook = new byte[] { 0 }
+        };
+        context.Employee.Add(stdEmployee);
+        context.EmployeeLogin.Add(new EmployeeLogin
+        {
+            employee_id = "EMP1003",
+            Password = BCrypt.Net.BCrypt.HashPassword("EmpPassword123")
+        });
+
+        context.SaveChanges();
+    }
+}
+
 app.Run();
