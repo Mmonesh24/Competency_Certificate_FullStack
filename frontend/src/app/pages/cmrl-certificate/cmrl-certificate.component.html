@@ -1,0 +1,208 @@
+<div id="certificate-to-download">
+
+    <div *ngIf="EmployeeDetails.employee_type === 0 " class="certificate-container">
+
+        <div class="certificate">
+            <div class="header">
+                <div class="logo">
+                    <img src="https://ik.imagekit.io/Mmonesh24/cmrl_logo.jpeg" alt="Contractor Logo" style="height: 80px;" />
+                </div>
+                <div class="company-name">CHENNAI METRO RAIL LIMITED</div>
+            </div>
+
+            <div class="title-section">
+                <div class="certificate-title">
+                    CERTIFICATE OF<br>
+                    COMPETENCY
+                </div>
+                <div
+                    class="w-24 h-32 border border-gray-400 rounded overflow-hidden flex items-center justify-center bg-white">
+                    <img *ngIf="empimage" [src]="empimage" alt="photo" class="object-cover w-full h-full" />
+                </div>
+            </div>
+
+            <div class="certificate-number">
+                CERTIFICATE No. {{ EmployeeDetails.certificateNumber || 'CMRL___' }}<br>
+                Date of Issue: {{ EmployeeDetails.dateOfIssue || '__/__/____' }}
+
+            </div>
+
+            <div class="details-section employee-details">
+                <div class="detail-row">
+                    <span class="detail-label">Name</span>
+                    <span>: </span>
+                    <span class="detail-value">{{EmployeeDetails.employee_name}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Emp. Id</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.
+                        employee_id
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date of Birth</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.dob
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">DOJ</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.joiningDate
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Aadhaar No</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.
+                        aadharNo
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Blood Group</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.bloodGroup}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Contact</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.
+                        contactNo
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span style="font-size: 20px;">Certified Competent to work as {{EmployeeDetails.designation_Name
+                        }}</span>
+                </div>
+                <div style="border-bottom: 0.5px solid rgba(255,255,255,0.5); margin: 1mm 0;"></div>
+                <div class="detail-row">
+                    <span style="font-size: 20px;">Valid from: {{ EmployeeDetails.dateOfIssue || '__/__/____' }} to {{
+                        EmployeeDetails.validTo || '__/__/____' }}</span>
+                </div>
+            </div>
+
+            <div class="signatures">
+                <div class="signature-box">
+                    <div>Signature of</div>
+                    <div>Competent Authority</div>
+                </div>
+                <div class="signature-box">
+                    <div>Signature of</div>
+                    <div>Employee</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="EmployeeDetails.employee_type === 1" class="certificate-container">
+        <div class="certificate">
+            <div class="header">
+                <div class="logo">
+                    <img src="/src/assets/cmrl_logo.jpeg" alt="Contractor Logo" style="height: 80px;" />
+                </div>
+                <div class="company-name">CHENNAI METRO RAIL LIMITED</div>
+<div class="contractor-logo text-center" *ngIf="EmployeeDetails.employee_type === 1">
+  <img 
+    *ngIf="contractor.logo" 
+    [src]="contractor.logo" 
+    alt="Contractor Logo" 
+    class="h-20 w-20 rounded-lg mx-auto object-cover border border-gray-300 shadow-sm" 
+  />
+  <p class="mt-2 text-sm font-medium text-gray-700">
+    {{ contractor.name }}
+  </p>
+</div>
+
+
+            </div>
+
+            <div class="title-section">
+                <div class="certificate-title">
+                    CERTIFICATE OF<br>
+                    COMPETENCY
+                </div>
+                <div
+                    class="w-24 h-32 border border-gray-400 rounded overflow-hidden flex items-center justify-center bg-white">
+                    <img *ngIf="empimage" [src]="empimage" alt="photo" class="object-cover w-full h-full" />
+                </div>
+
+            </div>
+
+            <div class="certificate-number">
+                CERTIFICATE No. {{ EmployeeDetails.certificateNumber || 'CMRL___' }}<br>
+                Date of Issue: {{ EmployeeDetails.dateOfIssue || '__/__/____' }}
+
+            </div>
+
+            <div class="details-section contractor-details">
+                <div class="detail-row">
+                    <span class="detail-label">Name</span>
+                    <span>: </span>
+                    <span class="detail-value">{{EmployeeDetails.employee_name}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Emp. Id</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.
+                        employee_id
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date of Birth</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.dob
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">DOJ</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.joiningDate
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Aadhaar No</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.
+                        aadharNo
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Blood Group</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.bloodGroup}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Contact</span>
+                    <span>:</span>
+                    <span class="detail-value">{{EmployeeDetails.
+                        contactNo
+                        }}</span>
+                </div>
+                <div class="detail-row">
+                    <span style="font-size: 20px;">Certified Competent to work as {{EmployeeDetails.designation_Name
+                        }}</span>
+                </div>
+                <div style="border-bottom: 0.5px solid rgba(255,255,255,0.5); margin: 1mm 0;"></div>
+                <div class="detail-row">
+                    <span style="font-size: 20px;">Valid from: {{ EmployeeDetails.dateOfIssue || '__/__/____' }} to {{
+                        EmployeeDetails.validTo || '__/__/____' }}</span>
+                </div>
+            </div>
+
+            <div class="signatures">
+                <div class="signature-box">
+                    <div>Signature of</div>
+                    <div>Competent Authority</div>
+                </div>
+                <div class="signature-box">
+                    <div>Signature of</div>
+                    <div>Employee</div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

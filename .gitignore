@@ -1,0 +1,44 @@
+# ==========================================
+# Git Ignore for CMRL Competency Certificate Monorepo
+# ==========================================
+
+# --- Node / Angular ---
+**/node_modules/
+npm-debug.log
+yarn-error.log
+testem.log
+/frontend/dist/
+/frontend/tmp/
+/frontend/out-tsc/
+/frontend/bazel-out/
+/frontend/.angular/cache/
+/frontend/coverage/
+
+# --- .NET / C# / Visual Studio ---
+# Build artifacts
+**/[Bb]in/
+**/[Oo]bj/
+**/[Log]s/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# VS Cache & settings
+.vs/
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
+
+# OS Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini

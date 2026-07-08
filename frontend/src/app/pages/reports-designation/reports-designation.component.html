@@ -1,0 +1,78 @@
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <div class="brand-icon">✓</div>
+      <span class="brand-text">CHENNAI METRO RAIL LIMITED</span>
+    </div>
+    <div class="navbar-menu">
+      <button class="nav-btn">Home</button>
+      <button class="nav-btn">View Profile</button>
+      <button class="nav-btn nav-btn-logout">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+  <div class="container">
+    <h1 class="page-title">Designation Management</h1>
+    
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search by designation name or code..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+        >
+      </div>
+    </div>
+
+    <!-- Designations Grid -->
+    <div class="designations-grid">
+      <div 
+        *ngFor="let designation of filteredDesignations" 
+        class="designation-card"
+      >
+        <div class="designation-icon">
+          <span>{{ designation.designation_Name.charAt(0).toUpperCase() }}</span>
+        </div>
+        <div class="designation-info">
+          <h3 class="designation-name">{{ designation.designation_Name }}</h3>
+          <p class="designation-code">Code: {{ designation.designationCode }}</p>
+        </div>
+        
+        
+      </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div *ngIf="filteredDesignations.length === 0" class="no-results">
+      <p>No designations found matching your search criteria.</p>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="brand-icon">✓</div>
+      <span class="brand-text">CHENNAI METRO RAIL LIMITED</span>
+    </div>
+    <div class="footer-content">
+      <p>The Government of Tamil Nadu created a Special Purpose Vehicle (SPV) for implementing the Chennai Metro Rail Project.</p>
+      <p>This SPV named as "Chennai Metro Rail Limited" was incorporated on 03.12.2007 under the Companies Act.</p>
+    </div>
+    <div class="footer-social">
+      <a href="#" class="social-link">in</a>
+      <a href="#" class="social-link"></a>
+      <a href="#" class="social-link">f</a>
+      <a href="#" class="social-link">x</a>
+    </div>
+  </div>
+</footer>
+<router-outlet></router-outlet>

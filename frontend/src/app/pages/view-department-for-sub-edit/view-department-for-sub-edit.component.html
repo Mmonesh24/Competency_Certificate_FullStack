@@ -1,0 +1,482 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+<nav class="my-auto p-3 bg-white shadow-md">
+  <div class="flex justify-between items-center">
+    <!-- Logo and Company Name -->
+    <div class="navbar-brand">
+      <div class="logo">
+        <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg">
+          <circle cx="20" cy="20" r="18" fill="#4285f4" stroke="white" stroke-width="2" />
+          <path d="M15 20 L18 23 L25 16" stroke="white" stroke-width="2" fill="none" />
+        </svg>
+      </div>
+      <span class="company-name">CHENNAI METRO RAIL LIMITED</span>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="navbar-nav desktop-nav">
+      <button class="nav-btn home-btn" (click)="goHome()">Home</button>
+      <button class="nav-btn" (click)="viewProfile()">View Profile</button>
+      <button class="nav-btn logout-btn" (click)="logout()">Logout</button>
+    </div>
+
+    <!-- Mobile Hamburger Menu -->
+    <button class="hamburger-btn mobile-nav" (click)="toggleSideMenu()">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </button>
+  </div>
+</nav>
+<br>
+<!-- Department Management Section -->
+<main class="main-content">
+  <div class="container">
+    <h1 class="page-title">Department Management</h1>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search by department or subdepartment name..." [(ngModel)]="searchTerm"
+          (input)="onSearch()" />
+      </div>
+    </div>
+
+    <!-- Departments Grid -->
+    <div class="space-y-4 px-4 py-6">
+      <ng-container *ngFor="let employee of filteredDepartment">
+<div
+  class="bg-white shadow-md rounded-2xl p-6 transition duration-300 transform hover:shadow-xl hover:-translate-y-1 relative">
+  
+  <!-- Edit Button Top Right -->
+  <button 
+    (click)="Edit(employee.departmentName)" 
+    class="absolute top-4 right-4 px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
+    Edit
+  </button>
+
+  <!-- Department Header -->
+  <div class="flex items-center space-x-4">
+    <!-- Circle Initial -->
+    <div
+      class="flex items-center justify-center w-14 h-14 rounded-full bg-blue-500 text-white text-xl font-bold">
+      {{ employee.departmentName.charAt(0).toUpperCase() }}
+    </div>
+
+    <!-- Department Info -->
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800">
+        {{ employee.departmentName }}
+      </h3>
+      <p class="text-sm text-gray-500" *ngIf="employee.departmentCode">
+        Code: {{ employee.departmentCode }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Toggle Subdepartments -->
+  <button (click)="toggleSubDepartments(employee.departmentName)"
+    class="text-sm text-blue-600 hover:underline mt-4 flex items-center gap-1">
+    <span class="font-medium" *ngIf="!departmentToggleMap[employee.departmentName]">
+      Show Sub Departments ⬇️
+    </span>
+    <span *ngIf="departmentToggleMap[employee.departmentName]">
+      Hide Sub Departments ⬆️
+    </span>
+  </button>
+
+  <!-- Subdepartments Section -->
+  <div class="mt-4 overflow-hidden transition-all duration-500 ease-in-out"
+    [ngClass]="{
+      'max-h-[1000px] opacity-100': departmentToggleMap[employee.departmentName],
+      'max-h-0 opacity-0': !departmentToggleMap[employee.departmentName]
+    }">
+    
+    <ng-container *ngIf="subDepartmentsMap[employee.departmentName]">
+      <!-- Header with Count -->
+      <div class="flex items-center justify-between mb-3 border-b border-gray-200 pb-2">
+        <h4 class="text-lg font-semibold text-gray-800 tracking-tight">
+          Sub Departments
+        </h4>
+        <span
+          class="inline-flex items-center justify-center text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1.5 rounded-full shadow-sm">
+          {{ getFilteredSubDepartments(employee.departmentName).length || 0 }}
+        </span>
+      </div>
+
+      <!-- Subdepartment List -->
+      <div *ngIf="getFilteredSubDepartments(employee.departmentName).length > 0">
+        <div *ngFor="let sub of getFilteredSubDepartments(employee.departmentName); let i = index"
+          class="flex items-center gap-3 mb-2">
+          <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+          <span class="text-sm text-gray-700">{{ sub.subDepartmentName }}</span>
+          <span class="text-xs text-gray-500" *ngIf="sub.subDepartmentCode">({{ sub.subDepartmentCode }})</span>
+        </div>
+      </div>
+
+      <!-- No Subdepartments -->
+      <div *ngIf="getFilteredSubDepartments(employee.departmentName).length === 0"
+        class="text-sm text-gray-500 italic flex items-center gap-2">
+        <span>ℹ️</span>
+        <p>No sub departments found</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="departmentToggleMap[employee.departmentName] && !subDepartmentsMap[employee.departmentName]"
+    class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+    <span>No Sub Department</span>
+  </div>
+</div>
+
+      </ng-container>
+    </div>
+
+    <!-- No Results Message -->
+    <div *ngIf="filteredDepartment.length === 0" class="no-results">
+      <div class="no-results-icon">📁</div>
+      <h3>No Departments Found</h3>
+      <p>No departments found matching your search criteria.</p>
+    </div>
+  </div>
+</main>
+
+<style>
+  /* Main Content Styles */
+  .main-content {
+    min-height: calc(100vh - 200px);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Search Section */
+  .search-section {
+    margin-bottom: 2rem;
+  }
+
+  .search-container {
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 1rem;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+  }
+
+  /* Departments Grid */
+  .departments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Department Card */
+  .department-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .department-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #4285f4;
+  }
+
+  .department-card:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4285f4, #34a853);
+  }
+
+  /* Department Header */
+  .department-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .department-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+  }
+
+  .department-icon span {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .department-info {
+    flex: 1;
+  }
+
+  .department-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 0.25rem 0;
+    line-height: 1.3;
+  }
+
+  .department-meta {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .department-code {
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  /* Subdepartments Section */
+  .subdepartments-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .subdepartments-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .subdepartments-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #475569;
+    margin: 0;
+  }
+
+  .subdepartment-count {
+    background: #4285f4;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* Subdepartments List */
+  .subdepartments-list {
+    max-height: 120px;
+    overflow-y: auto;
+    margin-top: 0.5rem;
+  }
+
+  .subdepartment-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .subdepartment-item:last-child {
+    border-bottom: none;
+  }
+
+  .subdepartment-dot {
+    width: 6px;
+    height: 6px;
+    background: #4285f4;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .subdepartment-name {
+    color: #475569;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  /* No Subdepartments */
+  .no-subdepartments {
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .no-subdepartments-text {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .info-icon {
+    font-size: 1rem;
+  }
+
+  /* Loading Section */
+  .loading-section {
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #e2e8f0;
+    border-top: 2px solid #4285f4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 0.5rem;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-text {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  /* No Results */
+  .no-results {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #64748b;
+  }
+
+  .no-results-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .no-results h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .no-results p {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .departments-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .department-card {
+      padding: 1rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .department-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .department-icon span {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 0 0.5rem;
+    }
+
+    .search-input {
+      padding: 0.75rem 1rem;
+    }
+
+    .department-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .department-header {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  /* Scrollbar Styling for Subdepartments */
+  .subdepartments-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .subdepartments-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+
+  .subdepartments-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+</style>

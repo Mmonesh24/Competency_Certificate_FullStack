@@ -1,0 +1,146 @@
+<!-- Navbar -->
+<nav class="p-4 bg-white shadow-md">
+  <div class="flex justify-between items-center">
+    <!-- Logo and Company Name -->
+    <div class="flex items-center gap-3">
+      <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg">
+        <circle cx="20" cy="20" r="18" fill="#4285f4" stroke="white" stroke-width="2" />
+        <path d="M15 20 L18 23 L25 16" stroke="white" stroke-width="2" fill="none" />
+      </svg>
+      <span class="text-lg font-bold text-gray-900 whitespace-nowrap">CHENNAI METRO RAIL LIMITED</span>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex items-center space-x-4">
+      <button class="bg-blue-500 text-white font-semibold px-5 py-2 rounded-full hover:bg-blue-600 transition"
+        (click)="goHome()">
+        Home
+      </button>
+      <button class="bg-blue-500 text-white font-semibold px-5 py-2 rounded-full hover:bg-blue-600 transition"
+        (click)="viewProfile()">
+        View Profile
+      </button>
+      <button class="bg-blue-500 text-white font-semibold px-5 py-2 rounded-full hover:bg-blue-600 transition"
+        (click)="logout()">
+        Logout
+      </button>
+    </div>
+
+    <!-- Mobile Hamburger Menu -->
+    <button class="md:hidden flex flex-col gap-1" (click)="toggleSideMenu()">
+      <span class="w-6 h-0.5 bg-gray-800 rounded"></span>
+      <span class="w-6 h-0.5 bg-gray-800 rounded"></span>
+      <span class="w-6 h-0.5 bg-gray-800 rounded"></span>
+    </button>
+  </div>
+</nav>
+
+<br>
+
+<!-- Main Content -->
+<main class="main-content">
+  <div class="container">
+    <h1 class="page-title">Contractor Management</h1>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search by contractor name, code, or ID..."
+          [(ngModel)]="searchTerm" (input)="onSearch()" />
+        <!-- Optional: Add clear button -->
+        <button *ngIf="searchTerm" (click)="clearSearch()" 
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="data.length === 0" class="loading text-center py-8">
+      <p>Loading contractors...</p>
+    </div>
+
+    <!-- Contractors Grid - Now uses filteredContractors -->
+    <div class="designations-grid" *ngIf="filteredContractors.length > 0">
+      <div *ngFor="let contractor of filteredContractors" class="designation-card">
+        <div class="designation-icon flex justify-center items-center">
+          <img 
+            *ngIf="contractor.logo" 
+            [src]="'data:' + contractor.logoMimeType + ';base64,' + contractor.logo"
+            alt="Contractor Logo" 
+            class="w-16 h-16 rounded-full object-cover border border-gray-300 shadow"
+          />
+          <!-- Fallback icon when no logo -->
+          <div *ngIf="!contractor.logo" 
+               class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border border-gray-300 shadow">
+            <span class="text-2xl font-bold text-gray-500">
+              {{ (contractor.contractorName || 'C').charAt(0).toUpperCase() }}
+            </span>
+          </div>
+        </div>
+        <div class="designation-info text-center mt-2">
+          <h3 class="designation-name text-sm font-medium text-gray-800">
+            {{ contractor.contractorName || 'Unknown Contractor' }}
+          </h3>
+          <!-- Optional: Add contractor ID or code -->
+          <p *ngIf="contractor.contractorCode" class="text-xs text-gray-500 mt-1">
+            Code: {{ contractor.contractorCode }}
+          </p>
+          <p *ngIf="contractor.contractorId" class="text-xs text-gray-500">
+            ID: {{ contractor.contractorId }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div *ngIf="searchTerm && filteredContractors.length === 0 && data.length > 0" class="no-results text-center py-8">
+      <p>No contractors found matching your search criteria.</p>
+      <button (click)="clearSearch()" class="mt-2 text-blue-500 hover:text-blue-700 underline">
+        Clear search
+      </button>
+    </div>
+
+    <!-- No Data Message -->
+    <div *ngIf="data.length === 0" class="no-data text-center py-8">
+      <p>No contractors available.</p>
+      <button (click)="refreshContractors()" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Refresh
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<br>
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 40 40" class="logo-svg">
+            <circle cx="20" cy="20" r="18" fill="white" stroke="#4285f4" stroke-width="2" />
+            <path d="M15 20 L18 23 L25 16" stroke="#4285f4" stroke-width="2" fill="none" />
+          </svg>
+        </div>
+      </div>
+      <div class="footer-info">
+        <h3>CHENNAI METRO RAIL LIMITED</h3>
+        <p>The Government of Tamil Nadu created a Special Purpose Vehicle (SPV) for implementing the Chennai Metro Rail
+          Project. This SPV named as "Chennai Metro Rail Limited" was incorporated on 03.12.2007 under the Companies
+          Act.</p>
+      </div>
+      <div class="footer-social">
+        <a href="#" class="social-link linkedin">in</a>
+        <a href="#" class="social-link instagram">📷</a>
+        <a href="#" class="social-link facebook">f</a>
+        <a href="#" class="social-link twitter">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="#" class="footer-link">Terms & Conditions</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+<router-outlet></router-outlet>

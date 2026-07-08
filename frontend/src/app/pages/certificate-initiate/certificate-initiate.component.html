@@ -1,0 +1,162 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+<!-- employee-management.component.html -->
+<div class="app-container">
+  <!-- Navbar -->
+  <nav class=" my-auto p-3">
+    <div class=" flex justify-between items-center">
+      <!-- Logo and Company Name -->
+      <div class="navbar-brand">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg">
+            <circle cx="20" cy="20" r="18" fill="#4285f4" stroke="white" stroke-width="2"/>
+            <path d="M15 20 L18 23 L25 16" stroke="white" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <span class="company-name">CHENNAI METRO RAIL LIMITED</span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="navbar-nav desktop-nav " >
+        <button class="nav-btn home-btn" (click)="goHome()">Home</button>
+        <button class="nav-btn" (click)="viewProfile()">View Profile</button>
+        <button class="nav-btn logout-btn" (click)="logout()">Logout</button>
+      </div>
+
+      <!-- Mobile Hamburger Menu -->
+      <button class="hamburger-btn mobile-nav" (click)="toggleSideMenu()">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Side Menu Overlay -->
+  <div class="side-menu-overlay" 
+       [class.active]="isSideMenuOpen" 
+       (click)="closeSideMenu()"></div>
+
+  <!-- Side Menu -->
+  <div class="side-menu" [class.active]="isSideMenuOpen">
+    <div class="side-menu-header">
+      <span>Menu</span>
+      <button class="close-btn" (click)="closeSideMenu()">×</button>
+    </div>
+    <div class="side-menu-content">
+      <button class="side-menu-item" (click)="goHome()">
+        <span></span> Home
+      </button>
+      <button class="side-menu-item" (click)="viewProfile()">
+        <span></span> View Profile
+      </button>
+      <button class="side-menu-item logout" (click)="logout()">
+        <span></span> Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <h1 class="page-title">Certificate Initiation</h1>
+      
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            name="search"
+            class="search-input" 
+            placeholder="Search by name or employee ID..." 
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()"
+          />
+          <button 
+            class="clear-btn" 
+            *ngIf="searchQuery" 
+            (click)="clearSearch()"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+
+      <!-- Employee Cards Grid -->
+      <div class="employee-grid">
+        <!-- Employee Cards - MOVED OUTSIDE OF MODAL -->
+        <div class="employee-card" 
+             *ngFor="let employee of filteredEmployees; trackBy: trackByEmployeeId">
+          <div class="employee-info">
+            <div class="employee-avatar">
+              {{ getInitials(employee.employee_name) }}
+            </div>
+            <div class="employee-details">
+              <h3 class="employee-name">{{ employee.employee_name }}</h3>
+              <p class="employee-id">ID: {{ employee.employee_id }}</p>
+            </div>
+          </div>
+          <button class="initialize-btn" (click)="initializeEmployee(employee)">
+            Initialize
+          </button>
+        </div>
+      </div>
+
+      <!-- No Results Message -->
+      <div class="no-results" *ngIf="filteredEmployees.length === 0">
+        <p>No employees found matching your search criteria.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Custom Confirmation Modal - MOVED OUTSIDE OF EMPLOYEE GRID -->
+  <div class="modal-overlay" *ngIf="showConfirmationModal" (click)="onConfirmationResult(false)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Confirmation</h3>
+        <button class="close-btn" (click)="onConfirmationResult(false)">×</button>
+      </div>
+      <div class="modal-body">
+        <p>{{ confirmationMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ok" (click)="onConfirmationResult(true)">
+          <span class="checkmark">✓</span> Yes
+        </button>
+        <button class="btn-cancel" (click)="onConfirmationResult(false)">
+          <span class="cross">✕</span> No
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" class="logo-svg">
+              <circle cx="20" cy="20" r="18" fill="white" stroke="#4285f4" stroke-width="2"/>
+              <path d="M15 20 L18 23 L25 16" stroke="#4285f4" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="footer-info">
+          <h3>CHENNAI METRO RAIL LIMITED</h3>
+          <p>The Government of Tamil Nadu created a Special Purpose Vehicle (SPV) for implementing the Chennai Metro Rail Project. This SPV named as "Chennai Metro Rail Limited" was incorporated on 03.12.2007 under the Companies Act.</p>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-link linkedin">in</a>
+          <a href="#" class="social-link instagram">📷</a>
+          <a href="#" class="social-link facebook">f</a>
+          <a href="#" class="social-link twitter">𝕏</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <a href="#" class="footer-link">Terms & Conditions</a>
+        <a href="#" class="footer-link">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+</div>
+<router-outlet></router-outlet>

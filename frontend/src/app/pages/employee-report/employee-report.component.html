@@ -1,0 +1,122 @@
+<nav class="my-auto p-3 bg-white shadow-md">
+    <div class="flex justify-between items-center">
+      <!-- Logo and Company Name -->
+      <div class="navbar-brand">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg">
+            <circle cx="20" cy="20" r="18" fill="#4285f4" stroke="white" stroke-width="2"/>
+            <path d="M15 20 L18 23 L25 16" stroke="white" stroke-width="2" fill="none"/>
+          </svg>
+          <span class="company-name">CHENNAI METRO RAIL LIMITED</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="navbar-nav desktop-nav">
+        <button class="nav-btn home-btn" (click)="goHome()">Home</button>
+        <button class="nav-btn" (click)="viewProfile()">View Profile</button>
+        <button class="nav-btn logout-btn" (click)="logout()">Logout</button>
+      </div>
+
+      <!-- Mobile Hamburger Menu -->
+      <button class="hamburger-btn mobile-nav" (click)="toggleSideMenu()">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+      </button>
+      </div>
+  </nav>
+<!-- Main Content -->
+<main class="main-content">
+
+  <div class="container">
+    <h1 class="page-title">Employee Directory</h1>
+    
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search employees by name or designation..." 
+               [(ngModel)]="searchTerm" (input)="onSearch()" />
+        <div class="search-icon">🔍</div>
+      </div>
+    </div>
+
+    <!-- Employee Stats -->
+<div class="flex justify-center items-center py-6">
+  <div class="w-48 h-48 bg-white rounded-xl shadow-md flex flex-col justify-center items-center">
+    <div class="text-4xl font-bold text-indigo-600">
+      {{ filteredEmployee.length || 0 }}
+    </div>
+    <div class="mt-2 text-lg font-medium text-gray-700">
+      Total Employees
+    </div>
+  </div>
+</div>
+<br>
+
+    <!-- Employee Cards Grid -->
+<div class="space-y-6">
+  <ng-container *ngFor="let employee of filteredEmployee; let i = index">
+    <div class="flex items-center bg-gray-100 shadow-md rounded-xl p-5 transition duration-300 transform hover:shadow-xl hover:-translate-y-1 space-x-4">
+      
+      <!-- Circular Icon with Initial -->
+      <div class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white text-lg font-semibold">
+        {{ employee.employee_name.charAt(0).toUpperCase() }}
+      </div>
+
+      <!-- Info Block -->
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800">{{ employee.employee_name }}</h3>
+        <p class="text-sm text-gray-600">Employee ID: {{ employee.employee_id }}</p>
+        <p class="text-sm text-gray-600">Designation: {{ employee.designation_Name }}</p>
+      </div>
+
+    </div>
+  </ng-container>
+</div>
+
+
+    <!-- No Results Message -->
+    <div *ngIf="filteredEmployee?.length === 0" class="no-results">
+      <div class="no-results-icon">👥</div>
+      <h3>No Employees Found</h3>
+      <p>No employees found matching your search criteria.</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="!employeelist" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading employees...</p>
+    </div>
+  </div>
+</main>
+<br>
+    <!-- Footer -->
+    <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" class="logo-svg">
+              <circle cx="20" cy="20" r="18" fill="white" stroke="#4285f4" stroke-width="2"/>
+              <path d="M15 20 L18 23 L25 16" stroke="#4285f4" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="footer-info">
+          <h3>CHENNAI METRO RAIL LIMITED</h3>
+          <p>The Government of Tamil Nadu created a Special Purpose Vehicle (SPV) for implementing the Chennai Metro Rail Project. This SPV named as "Chennai Metro Rail Limited" was incorporated on 03.12.2007 under the Companies Act.</p>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-link linkedin">in</a>
+          <a href="#" class="social-link instagram">📷</a>
+          <a href="#" class="social-link facebook">f</a>
+          <a href="#" class="social-link twitter">𝕏</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <a href="#" class="footer-link">Terms & Conditions</a>
+        <a href="#" class="footer-link">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>

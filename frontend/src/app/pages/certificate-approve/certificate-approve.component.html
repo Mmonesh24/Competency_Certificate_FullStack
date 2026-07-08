@@ -1,0 +1,162 @@
+<!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid px-4">
+        <div class="navbar-brand d-flex align-items-center">
+          <div class="logo-circle me-3">
+            <span class="logo-text">C</span>
+          </div>
+          <span class="brand-text">CHENNAI METRO RAIL LIMITED</span>
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+          <button class="btn btn-primary me-2 nav-btn">Home</button>
+          <button class="btn btn-primary me-2 nav-btn">View Profile</button>
+          <button class="btn btn-primary nav-btn">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container-fluid px-4 py-5">
+        <!-- Page Title -->
+        <div class="text-center mb-5">
+          <h1 class="page-title">Competency Certificate Approval</h1>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-8 col-lg-6">
+            <div class="search-container">
+              <input 
+                type="text" 
+                class="form-control search-input" 
+                placeholder="Search by Sub Department name or code..."
+                [(ngModel)]="searchTerm"
+                (input)="onSearch()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Department Icon (if needed) -->
+        <div class="text-center mb-4" *ngIf="showDepartmentIcon">
+          <div class="department-icon">
+            <span class="department-letter">S</span>
+          </div>
+          <h4 class="mt-3 text-secondary">Server</h4>
+        </div>
+
+        <!-- Approval Pending Section -->
+        <div class="row justify-content-center">
+          <div class="col-12 col-xl-10">
+            <div class="approval-section">
+              <h3 class="section-title mb-4">
+                <i class="fas fa-clock text-warning me-2"></i>
+                Approval Pending
+                <span class="badge bg-warning text-dark ms-2">{{ filteredEmployees.length }}</span>
+              </h3>
+
+              <!-- Loading State -->
+              <div *ngIf="isLoading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading pending approvals...</p>
+              </div>
+
+              <!-- No Pending Approvals -->
+              <div *ngIf="!isLoading && filteredEmployees.length === 0" class="text-center py-5">
+                <i class="fas fa-check-circle text-success display-4 mb-3"></i>
+                <h5 class="text-muted">No pending approvals found</h5>
+                <p class="text-muted" *ngIf="searchTerm">Try adjusting your search criteria.</p>
+                <p class="text-muted" *ngIf="!searchTerm">All competency certificates have been processed.</p>
+              </div>
+
+              <!-- Employee Cards -->
+              <div *ngIf="!isLoading && filteredEmployees.length > 0" class="row g-4">
+                <div *ngFor="let employee of filteredEmployees;" 
+                     class="col-md-6 col-lg-4 col-xl-3">
+                  <div class="employee-card">
+                    <div class="card-header">
+                      <div class="employee-avatar">
+                        {{ getEmployeeInitials(employee.name) }}
+
+                      </div>
+                      <div class="status-badge">
+                        Pending
+                      </div>
+                    </div>
+                    
+                    <div class="card-body">
+                      <h6 class="employee-name">{{ employee.name }}</h6>
+                      <p class="employee-id">
+                        <i class="fas fa-id-badge me-1"></i>
+                        {{ employee.id }}
+                      </p>
+                      
+                      
+                    </div>
+                    
+                    <div class="card-footer">
+                      <button 
+                        class="btn btn-approve w-100"
+                        (click)="viewAndApprove(employee)"
+                        [disabled]="processingEmployeeId === employee.id">
+                        <span *ngIf="processingEmployeeId === employee.id" 
+                              class="spinner-border spinner-border-sm me-2" 
+                              role="status">
+                        </span>
+                        <i *ngIf="processingEmployeeId !== employee.id" 
+                           class="fas fa-eye me-2"></i>
+                        View and Approve
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container-fluid px-4">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div class="footer-content">
+              <div class="footer-logo">
+                <div class="footer-logo-circle">
+                  <i class="fas fa-subway"></i>
+                </div>
+              </div>
+              <div class="footer-text">
+                <h5 class="footer-title">CHENNAI METRO RAIL LIMITED</h5>
+                <p class="footer-description">
+                  The Government of Tamil Nadu created a Special Purpose Vehicle (SPV) for implementing the Chennai Metro Rail Project. 
+                  This SPV named as "Chennai Metro Rail Limited" was incorporated on 03.12.2007 under the Companies Act.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="social-links">
+              <a href="#" class="social-link linkedin">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-link instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="social-link facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-link twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <router-outlet> </router-outlet>

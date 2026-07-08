@@ -1,0 +1,339 @@
+/* Navbar Styles */
+    .navbar {
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .logo-circle {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #4472C4, #70A7E8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-text {
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    
+    .brand-text {
+      color: #4472C4;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+    
+    .nav-btn {
+      background: #4472C4;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-btn:hover {
+      background: #365a9b;
+      transform: translateY(-1px);
+    }
+
+    /* Main Content */
+    .main-content {
+      min-height: calc(100vh - 200px);
+      background: #f8f9fa;
+    }
+    
+    .page-title {
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 2.5rem;
+      margin-bottom: 0;
+    }
+    
+    /* Search Styles */
+    .search-container {
+      position: relative;
+    }
+    
+    .search-input {
+      padding: 15px 20px;
+      border-radius: 50px;
+      border: 2px solid #e9ecef;
+      font-size: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+      border-color: #4472C4;
+      box-shadow: 0 2px 20px rgba(68, 114, 196, 0.2);
+      outline: none;
+    }
+
+    /* Department Icon */
+    .department-icon {
+      width: 80px;
+      height: 80px;
+      background: #4472C4;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .department-letter {
+      color: white;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    /* Approval Section */
+    .approval-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .section-title {
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    /* Employee Cards */
+    .employee-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      border: 1px solid #e9ecef;
+    }
+    
+    .employee-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .card-header {
+      padding: 20px;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .employee-avatar {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #4472C4, #70A7E8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    .status-badge {
+      background: #fff3cd;
+      color: #856404;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #ffeaa7;
+    }
+    
+    .card-body {
+      padding: 20px;
+    }
+    
+    .employee-name {
+      color:linear-gradient(135deg, #3367d6, #4285f4);
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .employee-id {
+      color: linear-gradient(135deg, #3367d6, #4285f4);
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .employee-details {
+      margin-top: 15px;
+    }
+    
+    .detail-item {
+      color: linear-gradient(135deg, #3367d6, #4285f4);
+      font-size: 13px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .detail-item i {
+      width: 16px;
+      color: #4472C4;
+    }
+    
+    .card-footer {
+      padding: 15px 20px;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    .btn-approve {
+      background: linear-gradient(135deg, #3367d6, #4285f4);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-approve:hover:not(:disabled) {
+      background: linear-gradient(135deg, #3367d6, #4285f4);
+      transform: translateY(-1px);
+      color: white;
+    }
+    
+    .btn-approve:disabled {
+      background: linear-gradient(135deg, #3367d6, #4285f4);
+      cursor: not-allowed;
+    }
+
+    /* Footer Styles */
+    .footer {
+      background: #4472C4;
+      color: white;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    
+    .footer-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    
+    .footer-logo-circle {
+      width: 60px;
+      height: 60px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .footer-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    .footer-description {
+      margin-bottom: 0;
+      line-height: 1.6;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+    }
+    
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .social-link.linkedin {
+      background: #0077b5;
+    }
+    
+    .social-link.instagram {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+    
+    .social-link.facebook {
+      background: #1877f2;
+    }
+    
+    .social-link.twitter {
+      background: #1da1f2;
+    }
+    
+    .social-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .brand-text {
+        font-size: 16px;
+      }
+      
+      .nav-btn {
+        padding: 6px 15px;
+        font-size: 14px;
+      }
+      
+      .page-title {
+        font-size: 2rem;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .social-links {
+        justify-content: center;
+        margin-top: 20px;
+      }
+    }
+
+    /* Utility Classes */
+    .spinner-border-sm {
+      width: 1rem;
+      height: 1rem;
+    }
+    
+    .display-4 {
+      font-size: 3rem;
+    }
+    .logo-icon {
+    width: 60px;
+    height: 60px;
+    background-image: url('https://ik.imagekit.io/zog1wlw2a/logo%20cmrl.jpg?updatedAt=1749962984658');
+    /* <-- Your logo path */
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    /* optional */
+}
