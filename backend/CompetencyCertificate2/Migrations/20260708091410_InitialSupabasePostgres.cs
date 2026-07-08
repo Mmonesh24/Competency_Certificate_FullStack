@@ -1,22 +1,43 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace CompetencyCertificate.Migrations
 {
     /// <inheritdoc />
-    public partial class Final : Migration
+    public partial class InitialSupabasePostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AuditLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    TableName = table.Column<string>(type: "text", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PrimaryKey = table.Column<string>(type: "text", nullable: false),
+                    OldValues = table.Column<string>(type: "text", nullable: true),
+                    NewValues = table.Column<string>(type: "text", nullable: true),
+                    AffectedColumns = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contractor",
                 columns: table => new
                 {
                     ContractorName = table.Column<string>(type: "NVARCHAR(60)", nullable: false),
-                    Logo = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    Logo = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,7 +61,7 @@ namespace CompetencyCertificate.Migrations
                 columns: table => new
                 {
                     Designation_Name = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    designation_type = table.Column<int>(type: "int", nullable: false),
+                    designation_type = table.Column<int>(type: "integer", nullable: false),
                     DesignationCode = table.Column<string>(type: "nvarchar(60)", nullable: false)
                 },
                 constraints: table =>
@@ -53,7 +74,7 @@ namespace CompetencyCertificate.Migrations
                 columns: table => new
                 {
                     employee_id = table.Column<string>(type: "NVARCHAR(60)", nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR(60)", nullable: true),
+                    Password = table.Column<string>(type: "NVARCHAR(256)", nullable: true),
                     Designation = table.Column<string>(type: "NVARCHAR(60)", nullable: false)
                 },
                 constraints: table =>
@@ -84,10 +105,10 @@ namespace CompetencyCertificate.Migrations
                 {
                     Employee_id = table.Column<string>(type: "nvarchar(60)", nullable: false),
                     Employee_name = table.Column<string>(type: "nvarchar(60)", nullable: false),
-                    PhotoBase64 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Employee_type = table.Column<int>(type: "int", nullable: false),
-                    CategoryName = table.Column<int>(type: "int", nullable: false),
+                    PhotoBase64 = table.Column<string>(type: "text", nullable: true),
+                    Photo = table.Column<byte[]>(type: "bytea", nullable: false),
+                    Employee_type = table.Column<int>(type: "integer", nullable: false),
+                    CategoryName = table.Column<int>(type: "integer", nullable: false),
                     ContractorName = table.Column<string>(type: "NVARCHAR(60)", nullable: true),
                     DOB = table.Column<DateTime>(type: "date", nullable: false),
                     EPF_UAN_NO = table.Column<string>(type: "nvarchar(60)", nullable: false),
@@ -95,16 +116,16 @@ namespace CompetencyCertificate.Migrations
                     BankName = table.Column<string>(type: "nvarchar(60)", nullable: false),
                     BankAccountNumber = table.Column<string>(type: "nvarchar(60)", nullable: false),
                     Passbook = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PassbookBase64 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PassbookBase64 = table.Column<string>(type: "text", nullable: true),
                     JoiningDate = table.Column<DateTime>(type: "date", nullable: false),
                     Designation_Name = table.Column<string>(type: "nvarchar(60)", nullable: true),
                     DepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: true),
                     SubDepartmentName = table.Column<string>(type: "nvarchar(60)", nullable: true),
-                    AadharNo = table.Column<int>(type: "int", nullable: false),
+                    AadharNo = table.Column<string>(type: "nvarchar(12)", nullable: false),
                     BloodGroup = table.Column<string>(type: "nvarchar(60)", nullable: false),
                     ContactNo = table.Column<string>(type: "nvarchar(60)", nullable: true),
                     EmerContactNo = table.Column<string>(type: "nvarchar(60)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,7 +157,7 @@ namespace CompetencyCertificate.Migrations
                 columns: table => new
                 {
                     employee_id = table.Column<string>(type: "NVARCHAR(60)", nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR(60)", nullable: false)
+                    Password = table.Column<string>(type: "NVARCHAR(256)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,13 +193,12 @@ namespace CompetencyCertificate.Migrations
                 name: "Initiate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    employee_id = table.Column<string>(type: "nvarchar(60)", nullable: false)
+                    employee_id = table.Column<string>(type: "nvarchar(60)", nullable: false),
+                    ApprovalLevel = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Initiate", x => x.Id);
+                    table.PrimaryKey("PK_Initiate", x => x.employee_id);
                     table.ForeignKey(
                         name: "FK_Initiate_Employee_employee_id",
                         column: x => x.employee_id,
@@ -208,11 +228,6 @@ namespace CompetencyCertificate.Migrations
                 column: "SubDepartmentName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Initiate_employee_id",
-                table: "Initiate",
-                column: "employee_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SubDeparment_DepartmentName",
                 table: "SubDeparment",
                 column: "DepartmentName");
@@ -221,6 +236,9 @@ namespace CompetencyCertificate.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AuditLogs");
+
             migrationBuilder.DropTable(
                 name: "EmployeeLogin");
 
