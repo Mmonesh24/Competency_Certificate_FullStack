@@ -1,4 +1,195 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Outfit', sans-serif !important;
+  background-color: #e0e8f6 !important;
+  color: #3b4252 !important;
+  min-height: 100vh;
+  margin: 0;
+  transition: background-color 0.4s ease;
+  overflow-x: hidden;
+}
+
+app-root > * {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card, .bg-white, .shadow, .shadow-sm, .shadow-lg, [class*="shadow-"] {
+  background: #e0e8f6 !important;
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 8px 8px 16px #c1c9d9, -8px -8px 16px #ffffff !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 12px 12px 24px #b2bacb, -12px -12px 24px #ffffff !important;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08) !important;
+  border-radius: 20px !important;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="date"],
+select, textarea, .form-control, .form-select {
+  background: #e0e8f6 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: #3b4252 !important;
+  padding: 12px 16px !important;
+  box-shadow: inset 4px 4px 8px #c1c9d9, inset -4px -4px 8px #ffffff !important;
+  transition: all 0.25s ease !important;
+  outline: none !important;
+}
+
+input:focus, select:focus, textarea:focus, .form-control:focus, .form-select:focus {
+  box-shadow: inset 2px 2px 4px #b2bacb, inset -2px -2px 4px #ffffff, 0 0 8px rgba(129, 161, 193, 0.5) !important;
+}
+
+button, .btn {
+  border-radius: 30px !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.85rem !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+}
+
+.btn-primary, button[type="submit"], .btn-info {
+  background: linear-gradient(135deg, #81a1c1, #5e81ac) !important;
+  color: #ffffff !important;
+  box-shadow: 4px 4px 8px #c1c9d9, -4px -4px 8px #ffffff, inset 0 2px 4px rgba(255, 255, 255, 0.4) !important;
+}
+
+.btn-primary:hover, button[type="submit"]:hover, .btn-info:hover {
+  background: linear-gradient(135deg, #8fbcbb, #81a1c1) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 6px 6px 12px #b2bacb, -6px -6px 12px #ffffff !important;
+}
+
+.btn-primary:active, button[type="submit"]:active, .btn-info:active {
+  transform: translateY(1px) scale(0.96) !important;
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #a3be8c, #8fbcbb) !important;
+  color: #ffffff !important;
+  box-shadow: 4px 4px 8px #c1c9d9, -4px -4px 8px #ffffff, inset 0 2px 4px rgba(255, 255, 255, 0.4) !important;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #b48ead, #a3be8c) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 6px 6px 12px #b2bacb, -6px -6px 12px #ffffff !important;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #bf616a, #d08770) !important;
+  color: #ffffff !important;
+  box-shadow: 4px 4px 8px #c1c9d9, -4px -4px 8px #ffffff, inset 0 2px 4px rgba(255, 255, 255, 0.4) !important;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #d08770, #bf616a) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 6px 6px 12px #b2bacb, -6px -6px 12px #ffffff !important;
+}
+
+.btn-secondary {
+  background: #e0e8f6 !important;
+  color: #4c566a !important;
+  box-shadow: 4px 4px 8px #c1c9d9, -4px -4px 8px #ffffff !important;
+}
+
+.btn-secondary:hover {
+  box-shadow: 6px 6px 12px #b2bacb, -6px -6px 12px #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-secondary:active {
+  box-shadow: inset 4px 4px 8px #c1c9d9, inset -4px -4px 8px #ffffff !important;
+  transform: translateY(1px) !important;
+}
+
+.table, table {
+  background: #e0e8f6 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 10px !important;
+  border: none !important;
+  margin-top: 10px !important;
+}
+
+.table th, table th {
+  border: none !important;
+  color: #4c566a !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.5px !important;
+  padding: 12px 16px !important;
+  background: transparent !important;
+}
+
+.table tr, table tr {
+  box-shadow: 4px 4px 8px #c8d0e7, -4px -4px 8px #ffffff !important;
+  border-radius: 12px !important;
+  transition: all 0.25s ease !important;
+}
+
+.table tr:hover, table tr:hover {
+  transform: scale(1.01) !important;
+  box-shadow: 6px 6px 12px #b2bacb, -6px -6px 12px #ffffff !important;
+}
+
+.table td, table td {
+  border: none !important;
+  padding: 14px 16px !important;
+  background: transparent !important;
+  vertical-align: middle !important;
+}
+
+.sidebar, .navbar, nav {
+  background: #e0e8f6 !important;
+  box-shadow: 4px 4px 12px #c1c9d9, -4px -4px 12px #ffffff !important;
+  border-radius: 0 0 20px 20px !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e8f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c9d9;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a2abbd;
+}
