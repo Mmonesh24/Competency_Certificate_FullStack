@@ -3,6 +3,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using CompetencyCertificate.Models;
+using CompetencyCertificate.Repositories;
+using CompetencyCertificate.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Text;
 
@@ -84,6 +86,18 @@ if (string.IsNullOrEmpty(connectionString))
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Repositories
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+
+// Services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<ICertificateService, CertificateService>();
+builder.Services.AddScoped<IMasterDataService, MasterDataService>();
+builder.Services.AddScoped<IContractorService, ContractorService>();
 
 var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") 
     ?? builder.Configuration["AppSettings:JWTSecret"];
