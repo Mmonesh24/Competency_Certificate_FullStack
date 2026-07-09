@@ -1,95 +1,137 @@
+<!-- External CSS Imports (Font Awesome & Tailwind) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-<!-- Navigation Bar -->
-<nav class="my-auto p-3 bg-white shadow-md">
-    <div class="flex justify-between items-center">
-        <!-- Logo and Company Name -->
-        <div class="navbar-brand">
-            <div class="logo">
-                        <div class="logo-icon"></div>
+
+<div class="control-center-wrapper">
+    <!-- Top Brand Navigation Bar -->
+    <nav class="glass-navbar">
+        <div class="navbar-brand-section">
+            <div class="logo-circle-glowing">
+                <img src="https://ik.imagekit.io/zog1wlw2a/logo%20cmrl.jpg?updatedAt=1749962984658" alt="CMRL Logo" class="brand-logo-img">
             </div>
-            <span class="company-name">CHENNAI METRO RAIL LIMITED</span>
+            <div class="brand-text-section">
+                <span class="brand-title">CHENNAI METRO RAIL LIMITED</span>
+                <span class="brand-subtitle">Master Registry Administration Console</span>
+            </div>
         </div>
 
-        <!-- Desktop Navigation -->
-        <div class="navbar-nav desktop-nav">
-            <button class="nav-btn home-btn" (click)="goHome()">Home</button>
-            <button class="nav-btn" (click)="viewProfile()">View Profile</button>
-            <button class="nav-btn logout-btn" (click)="logout()">Logout</button>
+        <div class="navbar-meta-section">
+            <button class="nav-control-btn" (click)="goHome()">
+                <i class="fas fa-home mr-2"></i>Dashboard
+            </button>
+            <button class="logout-pill-btn" (click)="logout()">
+                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </button>
         </div>
+    </nav>
 
-        <!-- Mobile Hamburger Menu -->
-        <button class="hamburger-btn mobile-nav" (click)="toggleSideMenu()">
-            <div class="hamburger-line"></div>
-            <div class="hamburger-line"></div>
-            <div class="hamburger-line"></div>
-        </button>
-    </div>
-</nav>
-<br>
-<!-- TailwindCSS + Angular Dynamic Dropdown Section -->
-
-<div class="flex flex-col space-y-6 p-4 bg-gray-50 rounded-lg shadow-md max-w-xl mx-auto">
-    <h2 class="text-center font-bold text-2xl text-gray-800">Master Data Management</h2>
-
-    <div *ngFor="let section of sections">
-        <div class="bg-white rounded-lg shadow-sm border p-4">
-
-            <!-- Dropdown Header -->
-            <div class="flex justify-between items-center cursor-pointer" (click)="toggleDropdown(section.name)">
-                <span class="text-lg font-semibold text-gray-700">{{ section.name }}</span>
-                <button class="text-xl font-bold text-gray-600 hover:text-blue-600 transition-transform transform"
-                    [ngClass]="{'rotate-45': isOpenMap[section.name]}">
-                    +
+    <!-- Main Workspace Split-Grid -->
+    <main class="main-workspace-grid">
+        
+        <!-- LEFT PANEL: Entity Selector Menu -->
+        <aside class="sidebar-selector-card">
+            <h3 class="panel-header-title">
+                <i class="fas fa-bars-staggered mr-2 text-blue-600"></i>Master Registry
+            </h3>
+            
+            <div class="selection-buttons-list">
+                <button 
+                    *ngFor="let s of sections" 
+                    class="selector-item-btn" 
+                    [class.active]="s.name === activeSectionName"
+                    (click)="selectSection(s.name)">
+                    <span class="btn-core-content">
+                        <i class="fas {{ sectionMetadata[s.name].icon }} mr-3 text-slate-400 btn-icon-match"></i>
+                        {{ s.name }}
+                    </span>
+                    <span class="selector-count-badge">
+                        {{ counts[sectionMetadata[s.name].countKey] }}
+                    </span>
                 </button>
             </div>
+        </aside>
 
-            <!-- Dropdown Menu -->
-            <div *ngIf="isOpenMap[section.name]" class="mt-3 space-y-2">
-                <button (click)="navigateTo(section.addpath)"
-                    class="block px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded hover:bg-blue-100 transition">
-                    Add
-            </button>
-                <button (click)="navigateTo(section.editpath)"
-                    class="block px-4 py-2 text-sm text-green-600 bg-green-50 rounded hover:bg-green-100 transition">
-                    Edit
-        </button>
-                <button (click)="navigateTo(section.reportpath)"
-                    class="block px-4 py-2 text-sm text-indigo-600 bg-indigo-50 rounded hover:bg-indigo-100 transition">
-                    View
-    </button>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-<!-- Footer -->
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <div class="logo">
-                    <svg width="32" height="32" viewBox="0 0 40 40" class="logo-svg">
-                        <circle cx="20" cy="20" r="18" fill="white" stroke="#4285f4" stroke-width="2" />
-                        <path d="M15 20 L18 23 L25 16" stroke="#4285f4" stroke-width="2" fill="none" />
-                    </svg>
+        <!-- RIGHT PANEL: Active Control Center Board -->
+        <section class="active-details-board">
+            
+            <!-- Dashboard Info Banner -->
+            <div class="entity-overview-banner">
+                <div class="banner-icon-container">
+                    <i class="fas {{ getActiveMetadata().icon }}"></i>
+                </div>
+                <div class="banner-details-container">
+                    <h2 class="overview-banner-title">{{ activeSectionName }} Control Board</h2>
+                    <p class="overview-banner-desc">{{ getActiveMetadata().desc }}</p>
                 </div>
             </div>
-            <div class="footer-info">
-                <h3>CHENNAI METRO RAIL LIMITED</h3>
-                <p>The Government of Tamil Nadu created a Special Purpose Vehicle (SPV) for implementing the Chennai
-                    Metro Rail Project. This SPV named as "Chennai Metro Rail Limited" was incorporated on 03.12.2007
-                    under the Companies Act.</p>
+
+            <!-- Warning/Alert Callout -->
+            <div class="security-callout-panel">
+                <div class="callout-icon">
+                    <i class="fas fa-circle-info text-blue-600"></i>
+                </div>
+                <div class="callout-text">
+                    <span class="callout-label font-bold text-blue-900 block mb-1">Administrative Advisory</span>
+                    <p class="callout-desc text-slate-700 text-sm">{{ getActiveMetadata().alert }}</p>
+                </div>
             </div>
-            <div class="footer-social">
-                <a href="#" class="social-link linkedin">in</a>
-                <a href="#" class="social-link instagram">📷</a>
-                <a href="#" class="social-link facebook">f</a>
-                <a href="#" class="social-link twitter">𝕏</a>
+
+            <!-- Action Grid -->
+            <div class="actions-portal-grid">
+                
+                <!-- Card 1: Add Record -->
+                <div class="action-card-item add-action" (click)="navigateTo(getActiveSection().addpath)">
+                    <div class="action-icon-circle bg-blue-50 text-blue-600">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h4 class="action-card-title">Register Record</h4>
+                    <p class="action-card-text">Enrolls, binds, and stores a new {{ activeSectionName | slice:0:-1 }} record directly into the live PostgreSQL Supabase database instance.</p>
+                    <span class="action-card-footer-link text-blue-600 font-bold">
+                        Add Record <i class="fas fa-chevron-right ml-1"></i>
+                    </span>
+                </div>
+
+                <!-- Card 2: Edit Record -->
+                <div class="action-card-item edit-action" (click)="navigateTo(getActiveSection().editpath)">
+                    <div class="action-icon-circle bg-emerald-50 text-emerald-600">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h4 class="action-card-title">Modify & Update</h4>
+                    <p class="action-card-text">Edit, update, or revoke existing {{ activeSectionName | slice:0:-1 }} profile fields, registration files, and active workflow states.</p>
+                    <span class="action-card-footer-link text-emerald-600 font-bold">
+                        Edit Records <i class="fas fa-chevron-right ml-1"></i>
+                    </span>
+                </div>
+
+                <!-- Card 3: View Report -->
+                <div class="action-card-item report-action" (click)="navigateTo(getActiveSection().reportpath)">
+                    <div class="action-icon-circle bg-purple-50 text-purple-600">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h4 class="action-card-title">Audit Ledger</h4>
+                    <p class="action-card-text">Browse, search, sort, and export the complete dataset register of {{ activeSectionName }} with instant server-side data loading.</p>
+                    <span class="action-card-footer-link text-purple-600 font-bold">
+                        View Database <i class="fas fa-chevron-right ml-1"></i>
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-footer">
+        <div class="footer-container">
+            <div class="footer-bottom-line">
+                <span class="copy-notice">&copy; 2026 Chennai Metro Rail Limited. All rights reserved.</span>
+                <div class="footer-links-row">
+                    <a href="#" class="foot-link">Operational Security</a>
+                    <a href="#" class="foot-link">Privacy Statement</a>
+                    <a href="#" class="foot-link">Helpdesk Support</a>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <a href="#" class="footer-link">Terms & Conditions</a>
-            <a href="#" class="footer-link">Privacy Policy</a>
-        </div>
-    </div>
-</footer>
+    </footer>
+</div>
