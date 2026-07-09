@@ -149,21 +149,21 @@ namespace CompetencyCertificate.Controllers
         public async Task<IActionResult> GetCountGenerated()
         {
             var count = await _certificateService.GetCountGeneratedAsync();
-            return Ok(count);
+            return Ok(new { count });
         }
 
         [HttpGet("GetCountGeneratedByDepartment/{DepartmentName}")]
         public async Task<IActionResult> GetCountGeneratedByDepartment(string DepartmentName)
         {
             var count = await _certificateService.GetCountGeneratedByDepartmentAsync(DepartmentName);
-            return Ok(count);
+            return Ok(new { count });
         }
 
         [HttpGet("GetCountGeneratedBySubDepartment/{SubDepartmentName}")]
         public async Task<IActionResult> GetCountGeneratedBySubDepartment(string SubDepartmentName)
         {
             var count = await _certificateService.GetCountGeneratedBySubDepartmentAsync(SubDepartmentName);
-            return Ok(count);
+            return Ok(new { count });
         }
     }
 }

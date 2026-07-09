@@ -62,7 +62,7 @@ namespace CompetencyCertificate.Controllers
         public async Task<IActionResult> GetCountContractors()
         {
             var count = await _contractorService.GetCountContractorsAsync();
-            return Ok(count);
+            return Ok(new { count });
         }
     }
 }

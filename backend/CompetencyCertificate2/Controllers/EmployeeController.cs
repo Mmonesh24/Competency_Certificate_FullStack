@@ -77,21 +77,21 @@ namespace CompetencyCertificate.Controllers
         public async Task<IActionResult> GetCountEmployees()
         {
             var count = await _employeeService.GetCountEmployeesAsync();
-            return Ok(count);
+            return Ok(new { count });
         }
 
         [HttpGet("GetCountEmployeesByDepartmentId/{departmentId}")]
         public async Task<IActionResult> GetCountEmployeesByDepartmentId(string departmentId)
         {
             var count = await _employeeService.GetCountEmployeesByDepartmentAsync(departmentId);
-            return Ok(count);
+            return Ok(new { count });
         }
 
         [HttpGet("GetCountEmployeesBySubDepartmentId/{subDepartmentId}")]
         public async Task<IActionResult> GetCountEmployeesBySubDepartmentId(string subDepartmentId)
         {
             var count = await _employeeService.GetCountEmployeesBySubDepartmentAsync(subDepartmentId);
-            return Ok(count);
+            return Ok(new { count });
         }
 
         [HttpGet("GetEmployeesByDepartmentId/{departmentId}")]

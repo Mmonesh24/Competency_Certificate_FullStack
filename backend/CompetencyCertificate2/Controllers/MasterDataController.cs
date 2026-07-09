@@ -74,7 +74,7 @@ namespace CompetencyCertificate.Controllers
         public async Task<IActionResult> GetCountDepartments()
         {
             var count = await _masterDataService.GetCountDepartmentsAsync();
-            return Ok(count);
+            return Ok(new { count });
         }
 
         // --- SubDepartments ---
@@ -123,7 +123,7 @@ namespace CompetencyCertificate.Controllers
         public async Task<IActionResult> GetCountSubDepartments()
         {
             var count = await _masterDataService.GetCountSubDepartmentsAsync();
-            return Ok(count);
+            return Ok(new { count });
         }
 
         // --- Designations ---
@@ -189,7 +189,7 @@ namespace CompetencyCertificate.Controllers
         public async Task<IActionResult> GetCountDesignations()
         {
             var count = await _masterDataService.GetCountDesignationsAsync();
-            return Ok(count);
+            return Ok(new { count });
         }
     }
 }
