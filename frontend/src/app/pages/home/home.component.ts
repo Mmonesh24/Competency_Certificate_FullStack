@@ -57,16 +57,16 @@ export class HomeComponent implements OnInit {
 
   menulist: any = {
     HR: [
-      { path: '/MasterDataManagement', name: 'Master Data Management', icon: 'fa-database', desc: 'Manage departments, designations, contractors, and employee rosters.', color: '#3b82f6' },
-      { path: '/reports', name: 'Reports Portal', icon: 'fa-chart-pie', desc: 'Access comprehensive certification analytics and download spreadsheets.', color: '#8b5cf6' },
+      { path: 'MasterDataManagement', name: 'Master Data Management', icon: 'fa-database', desc: 'Manage departments, designations, contractors, and employee rosters.', color: '#3b82f6' },
+      { path: 'Reports', name: 'Reports Portal', icon: 'fa-chart-pie', desc: 'Access comprehensive certification analytics and download spreadsheets.', color: '#8b5cf6' },
     ],
     HOD: [
-      { path: '/certificate-hod-department', name: 'Approve Certificates', icon: 'fa-file-signature', desc: 'Review, digitally sign, and approve department competency credentials.', color: '#10b981' },
-      { path: '/reports', name: 'Department Reports', icon: 'fa-folder-open', desc: 'Monitor active certifications and completion statistics.', color: '#f59e0b' },
+      { path: 'certificate-hod-department', name: 'Approve Certificates', icon: 'fa-file-signature', desc: 'Review, digitally sign, and approve department competency credentials.', color: '#10b981' },
+      { path: 'Reports', name: 'Department Reports', icon: 'fa-folder-open', desc: 'Monitor active certifications and completion statistics.', color: '#f59e0b' },
     ],
     Executive: [
-      { path: '/certificate-initiate', name: 'Initiate Certification', icon: 'fa-stamp', desc: 'Submit and trigger a new competency evaluation workflow.', color: '#ec4899' },
-      { path: '/reports', name: 'My Submissions', icon: 'fa-history', desc: 'Track the status and history of your submitted certificate requests.', color: '#06b6d4' }
+      { path: 'certificate-initiate', name: 'Initiate Certification', icon: 'fa-stamp', desc: 'Submit and trigger a new competency evaluation workflow.', color: '#ec4899' },
+      { path: 'Reports', name: 'My Submissions', icon: 'fa-history', desc: 'Track the status and history of your submitted certificate requests.', color: '#06b6d4' }
     ]
   };
  
